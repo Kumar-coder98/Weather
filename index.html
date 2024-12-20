@@ -1,74 +1,82 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Current Temperature</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f0f0f0;
-        }
-        .container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(239, 105, 105, 0.1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather and Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+    p {
+      font-size: 18px;
+    }
+    #error {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Current Temperature</h1>
-        <p id="temperature">Fetching location...</p>
-    </div>
+  <h1>Current Weather</h1>
+  <p id="location">Fetching your location...</p>
+  <p id="temperature">Fetching temperature...</p>
+  <p id="error"></p>
 
-    <script>
-        // Weather API key (replace with your API key)
-        const API_KEY = '73dbd6cbf0a55785bc555fefbbf0d076';
+  <script>
+    // API Key for OpenWeatherMap
+    const API_KEY = "aa0ae27e321c7b189650522b6a20cba1"; // Replace with your actual API key.
 
-        // Function to fetch weather data
-        async function getWeather(lat, lon) {
-            try {
-                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`);
-                const data = await response.json();
-                if (response.ok) {
-                    document.getElementById('temperature').textContent = `The current temperature is ${data.main.temp}°C.`;
-                } else {
-                    document.getElementById('temperature').textContent = `Error: ${data.message}`;
-                }
-            } catch (error) {
-                document.getElementById('temperature').textContent = `Error: Unable to fetch weather data.`;
-            }
-        }
+    // Function to fetch weather data using latitude and longitude
+    function fetchWeather(lat, lon) {
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch weather data.");
+          }
+          return response.json();
+        })
+        .then(data => {
+          const location = data.name || "Unknown Location";
+          const temperature = data.main.temp;
+          document.getElementById("location").innerText = `Location: ${location}`;
+          document.getElementById("temperature").innerText = `Temperature: ${temperature}°C`;
+        })
+        .catch(error => {
+          document.getElementById("error").innerText = "Error fetching weather data.";
+          console.error(error);
+        });
+    }
 
-        // Function to get user's location
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        getWeather(latitude, longitude);
-                    },
-                    () => {
-                        document.getElementById('temperature').textContent = 'Error: Unable to access your location.';
-                    }
-                );
-            } else {
-                document.getElementById('temperature').textContent = 'Geolocation is not supported by your browser.';
-            }
-        }
+    // Function to get user's location
+    function getUserLocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
+            fetchWeather(latitude, longitude);
+          },
+          error => {
+            document.getElementById("location").innerText = "Unable to fetch location.";
+            document.getElementById("temperature").innerText = "";
+            document.getElementById("error").innerText = "Location access denied or unavailable.";
+            console.error(error);
+          }
+        );
+      } else {
+        document.getElementById("location").innerText = "Geolocation not supported by your browser.";
+        document.getElementById("temperature").innerText = "";
+        document.getElementById("error").innerText = "";
+      }
+    }
 
-        // Initialize the application
-        getLocation();
-    </script>
+    // Call the function to get user's location and weather
+    getUserLocation();
+  </script>
 </body>
 </html>
