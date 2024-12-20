@@ -3,80 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather and Location</title>
+  <title>Weather Detector</title>
   <style>
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       text-align: center;
-      margin-top: 50px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      transition: background 0.5s;
     }
-    h1 {
-      color: #4CAF50;
+    .weather-container {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
     }
-    p {
-      font-size: 18px;
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
     }
-    #error {
-      color: red;
+    button:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <h1>Current Weather</h1>
-  <p id="location">Fetching your location...</p>
-  <p id="temperature">Fetching temperature...</p>
-  <p id="error"></p>
-
+  <div class="weather-container">
+    <h1>Weather Detector</h1>
+    <button onclick="getLocationWeather()">Detect Weather</button>
+    <div id="result"></div>
+  </div>
   <script>
-    // API Key for OpenWeatherMap
-    const API_KEY = "aa0ae27e321c7b189650522b6a20cba1"; // Replace with your actual API key.
+    async function getWeather(lat, lon) {
+      const apiKey = 'aa0ae27e321c7b189650522b6a20cba1'; // Replace with your OpenWeatherMap API key
+      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
 
-    // Function to fetch weather data using latitude and longitude
-    function fetchWeather(lat, lon) {
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("Failed to fetch weather data.");
-          }
-          return response.json();
-        })
-        .then(data => {
-          const location = data.name || "Unknown Location";
-          const temperature = data.main.temp;
-          document.getElementById("location").innerText = `Location: ${location}`;
-          document.getElementById("temperature").innerText = `Temperature: ${temperature}°C`;
-        })
-        .catch(error => {
-          document.getElementById("error").innerText = "Error fetching weather data.";
-          console.error(error);
-        });
-    }
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    // Function to get user's location
-    function getUserLocation() {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          position => {
-            const { latitude, longitude } = position.coords;
-            fetchWeather(latitude, longitude);
-          },
-          error => {
-            document.getElementById("location").innerText = "Unable to fetch location.";
-            document.getElementById("temperature").innerText = "";
-            document.getElementById("error").innerText = "Location access denied or unavailable.";
-            console.error(error);
+        if (data.cod === 200) {
+          const weather = data.weather[0].main.toLowerCase();
+          const temp = data.main.temp;
+          document.getElementById('result').innerHTML = `
+            <h2>${data.name}, ${data.sys.country}</h2>
+            <p>Weather: ${data.weather[0].description}</p>
+            <p>Temperature: ${temp}&#8451;</p>
+          `;
+
+          // Change background based on weather
+          switch (weather) {
+            case 'clear':
+              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.eFeaQKj4D6oz9LpcUTAvIgHaEo?w=265&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              break;
+            case 'clouds':
+              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.YYYhW_qvySbr5FWKUrSyzQHaE6?w=249&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              break;
+            case 'rain':
+              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.l8LSXevAgr0GqZixJilCWAHaEJ?pid=ImgDet&w=184&h=103&c=7&dpr=1.3')";
+              break;
+            case 'snow':
+              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP._zkas02w82Fz7Kz5scCwKwHaEK?w=326&h=183&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              break;
+            case 'thunderstorm':
+              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.TcSu-dhZJ5Q_YvYM2H1DpAHaE2?w=267&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              break;
+            case 'drizzle':
+              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.aY1GgvYvIHVy5f1rZRGfJgAAAA?w=247&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              break;
+            default:
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600')";
           }
-        );
-      } else {
-        document.getElementById("location").innerText = "Geolocation not supported by your browser.";
-        document.getElementById("temperature").innerText = "";
-        document.getElementById("error").innerText = "";
+        } else {
+          document.getElementById('result').innerHTML = `<p style="color: red;">Error fetching weather data!</p>`;
+        }
+      } catch (error) {
+        console.error(error);
+        document.getElementById('result').innerHTML = `<p style="color: red;">Error fetching weather data.</p>`;
       }
     }
 
-    // Call the function to get user's location and weather
-    getUserLocation();
+    function getLocationWeather() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            getWeather(latitude, longitude);
+          },
+          (error) => {
+            console.error(error);
+            document.getElementById('result').innerHTML = `<p style="color: red;">Location access denied.</p>`;
+          }
+        );
+      } else {
+        document.getElementById('result').innerHTML = `<p style="color: red;">Geolocation is not supported by your browser.</p>`;
+      }
+    }
   </script>
 </body>
 </html>
