@@ -66,28 +66,31 @@
           `;
 
           // Switch case to update background image based on weather condition
+        
+          // Switch case to update background image based on weather condition
           switch (weather) {
             case 'clear': // For clear weather
-              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.eFeaQKj4D6oz9LpcUTAvIgHaEo?w=265&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80')";
               break;
             case 'clouds': // For cloudy weather
-              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.bAlbzshaeQqr5LHmM2ty0wHaEK?w=295&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1500&q=80')";
               break;
             case 'rain': // For rainy weather
-              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.re2wW_v6kuDa_FTomWjq-gHaEK?w=283&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1500&q=80')";
               break;
             case 'snow': // For snowy weather
-              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.VHO3A4EFeRgbzQiNWSrkawHaE8?w=235&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1500&q=80')";
               break;
             case 'thunderstorm': // For thunderstorms
-              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.AhoLbldFXJDyAZ2N5bTuZgHaEK?w=267&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1500&q=80')";
               break;
             case 'drizzle': // For drizzle
-              document.body.style.backgroundImage = "url('https://th.bing.com/th/id/OIP.bEEy9VdlzspM-4YdXkwbRQHaE7?w=237&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80')";
               break;
             default: // Default background for other weather conditions
-              document.body.style.backgroundImage = "url('https://static.wixstatic.com/media/469274_ccf6f9fc2c064cf4a014a968602538de~mv2_d_4752_3168_s_4_2.jpg/v1/fill/w_1920,h_1280,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/469274_ccf6f9fc2c064cf4a014a968602538de~mv2_d_4752_3168_s_4_2.jpg')";
+              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1500&q=80')";
           }
+
         } else {
           // Displays an error message if the API call fails
           document.getElementById('result').innerHTML = `<p style="color: red;">Error fetching weather data!</p>`;
