@@ -1,126 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <!-- Specifies the document type as HTML5 -->
-  <meta charset="UTF-8"> <!-- Sets character encoding to UTF-8 -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the page responsive on all devices -->
-  <title>Weather Detector</title> <!-- Sets the title of the webpage -->
-  <style>
-    /* Styling for the entire body of the document */
-    body {
-      margin: 0; /* Removes default margin */
-      font-family: Arial, sans-serif; /* Sets the font style */
-      text-align: center; /* Aligns text to the center */
-      color: white; /* Sets text color to white */
-      display: flex; /* Makes the body a flex container */
-      flex-direction: column; /* Aligns items in a column */
-      justify-content: center; /* Centers content vertically */
-      align-items: center; /* Centers content horizontally */
-      height: 100vh; /* Sets the height to 100% of the viewport */
-      background-size: cover; /* Ensures background image covers entire screen */
-      background-position: center; /* Centers the background image */
-      transition: background 0.5s; /* Smooth transition effect for background changes */
-    }
-    .weather-container {
-      background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-      padding: 20px; /* Adds space inside the container */
-      border-radius: 10px; /* Rounds the corners */
-    }
-    button {
-      padding: 10px 20px; /* Adds space inside the button */
-      border: none; /* Removes default border */
-      border-radius: 5px; /* Rounds the button corners */
-      background-color: #28a745; /* Sets the button background color */
-      color: white; /* Sets the button text color */
-      cursor: pointer; /* Changes cursor to pointer on hover */
-    }
-    button:hover {
-      background-color: #218838; /* Darkens button color when hovered */
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <div class="weather-container">
-    <h1>Weather Detector</h1> <!-- Displays the main heading -->
-    <button onclick="getLocationWeather()">Detect Weather</button> <!-- Button triggers getLocationWeather function -->
-    <div id="result"></div> <!-- Container to display weather details -->
+  <div id="app">
+    <header>
+      <h1>Weather App</h1>
+      <p>Your comprehensive weather dashboard</p>
+    </header>
+
+    <div class="search-bar" width="100%" align="center">
+
+      <form id="search-form" autocomplete="off" align="center">
+        <div style="position: relative; flex: 1 ; align : center ;">
+          <input id="city-input" type="text" placeholder="Search for a city..." />
+
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <button type="submit" align="center">Search</button>
+      </form>
+      <button class="location-btn" id="location-btn" title="Use current location" aria-label="Use current location" align="center">
+        <img
+          src="https://cdn-icons-png.freepik.com/256/11741/11741543.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming" align="center"
+          alt="Location Icon" height="30" width="30" />
+      </button>
+    </div>
+
+    <div id="loading" style="display:none; text-align:center; margin-bottom: 1rem;">
+      <div class="spinner"></div>
+      <div class="loading-text">Loading weather data...</div>
+    </div>
+
+    <div id="weather-container" style="display:none;">
+      <div class="weather-grid">
+        <div class="weather-card card" id="weather-card"></div>
+        <div class="forecast-card card" id="forecast-card"></div>
+      </div>
+      <div class="weather-details" id="weather-details"></div>
+    </div>
+
+    <footer>
+      <p>Powered by OpenWeatherMap API • Built with JavaScript</p>
+    </footer>
   </div>
-  <script>
-    // Function to fetch weather details using latitude and longitude
-    async function getWeather(lat, lon) {
-      const apiKey = 'aa0ae27e321c7b189650522b6a20cba1'; // Replace with your OpenWeatherMap API key
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`; // Constructs the API URL
+  <div id="toast-container" style="
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+"></div>
 
-      try {
-        const response = await fetch(url); // Makes an API request
-        const data = await response.json(); // Converts the API response to JSON
+  <script src="script.js"></script>
 
-        if (data.cod === 200) { // Checks if the API request was successful
-          const weather = data.weather[0].main.toLowerCase(); // Gets the main weather condition
-          const temp = data.main.temp; // Gets the temperature in Celsius
-          // Updates the result div with location and weather details
-          document.getElementById('result').innerHTML = `
-            <h2>${data.name}, ${data.sys.country}</h2> <!-- Displays city and country -->
-            <p>Weather: ${data.weather[0].description}</p> <!-- Displays detailed weather description -->
-            <p>Temperature: ${temp}&#8451;</p> <!-- Displays temperature -->
-          `;
-
-          // Switch case to update background image based on weather condition
-        
-          // Switch case to update background image based on weather condition
-          switch (weather) {
-            case 'clear': // For clear weather
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80')";
-              break;
-            case 'clouds': // For cloudy weather
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1500&q=80')";
-              break;
-            case 'rain': // For rainy weather
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1500&q=80')";
-              break;
-            case 'snow': // For snowy weather
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1500&q=80')";
-              break;
-            case 'thunderstorm': // For thunderstorms
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1500&q=80')";
-              break;
-            case 'drizzle': // For drizzle
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1500&q=80')";
-              break;
-            default: // Default background for other weather conditions
-              document.body.style.backgroundImage = "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1500&q=80')";
-          }
-
-        } else {
-          // Displays an error message if the API call fails
-          document.getElementById('result').innerHTML = `<p style="color: red;">Error fetching weather data!</p>`;
-        }
-      } catch (error) {
-        // Logs errors to the console and displays an error message
-        console.error(error);
-        document.getElementById('result').innerHTML = `<p style="color: red;">Error fetching weather data.</p>`;
-      }
-    }
-
-    // Function to detect the user's location and fetch the weather
-    function getLocationWeather() {
-      if (navigator.geolocation) { // Checks if geolocation is supported
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords; // Extracts latitude and longitude
-            getWeather(latitude, longitude); // Calls getWeather with the coordinates
-          },
-          (error) => {
-            // Handles location access errors
-            console.error(error);
-            document.getElementById('result').innerHTML = `<p style="color: red;">Location access denied.</p>`;
-          }
-        );
-      } else {
-        // Displays a message if geolocation is not supported
-        document.getElementById('result').innerHTML = `<p style="color: red;">Geolocation is not supported by your browser.</p>`;
-      }
-    }
-  </script>
 </body>
+
 </html>
