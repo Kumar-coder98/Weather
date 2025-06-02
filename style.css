@@ -32,11 +32,9 @@ header p {
 }
 
 .search-bar {
-  background: #f8f9fa;
   border-radius: 1rem;
   padding: 1.5rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+ 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,7 +113,10 @@ header p {
   font-size: 1.2rem;
   pointer-events: none;
 }
+#city-input {
+  width: 150px;       /* or use a smaller percentage like 60% */
 
+}
 button {
   border-radius: 1rem;
   cursor: pointer;
