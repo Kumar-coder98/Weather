@@ -342,6 +342,25 @@ async function searchCity(city) {
 function showLoading(isLoading) {
   loadingDiv.style.display = isLoading ? 'block' : 'none';
 }
+function getCurrentLocation() {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error("Geolocation not supported"));
+    } else {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    }
+  });
+}
 
 async function handleLocationClick() {
   try {
