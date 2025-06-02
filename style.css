@@ -99,7 +99,7 @@ header p {
   transform: scale(1.1);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 824px) {
   .search-bar form {
     flex-wrap: nowrap; /* Force same line */
     gap: 0.3rem;
