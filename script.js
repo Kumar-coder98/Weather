@@ -1,3 +1,4 @@
+
 // Your weather API key
 const API_KEY = 'aa0ae27e321c7b189650522b6a20cba1';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
@@ -160,23 +161,21 @@ function showToast({ title, description, variant }) {
 }
 
 // Render functions
-function renderWeatherCard(weather, forecastData) {
+function renderWeatherCard(weather) {
   if (!weather) return;
   const iconUrl = customIcons[weather.icon] || "images/default.png";
 
   weatherCard.innerHTML = `
     <h2>${weather.name}, ${weather.country}</h2>
+    <br>
+    <br>
     <p class="weather-temp">${Math.round(weather.temp)}&deg;C</p>
     <p>Feels like: ${Math.round(weather.feels_like)}&deg;C</p>
     <img src="${iconUrl}" alt="${weather.description}" class="weather-icon" />
     <p class="desc">${weather.description}</p>
-    <canvas id="temperatureChart" width="400" height="200"></canvas>
+   
   `;
-
-  // Call the function to render the chart
-  renderTemperatureChart(forecastData);
 }
-
 
 const customIcons = {
   "01d": "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
@@ -290,46 +289,6 @@ function renderWeatherDetails(details) {
     </div>
   `;
 }
-function renderTemperatureChart(forecastData) {
-  const ctx = document.getElementById('temperatureChart').getContext('2d');
-  
-  // Prepare data for the chart
-  const labels = forecastData.map(day => day.date);
-  const temperatures = forecastData.map(day => (day.temp_max + day.temp_min) / 2); // Average temperature
-
-  const temperatureChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Temperature (°C)',
-        data: temperatures,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderWidth: 2,
-        fill: true,
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Temperature (°C)'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Date'
-          }
-        }
-      }
-    }
-  });
-}
 
 async function loadWeatherData(lat, lon) {
   try {
@@ -343,7 +302,7 @@ async function loadWeatherData(lat, lon) {
 
     currentCoordinates = { lat, lon };
 
-    renderWeatherCard(weatherData, forecastData); // Pass forecastData here
+    renderWeatherCard(weatherData);
     renderForecastCard(forecastData);
     renderWeatherDetails({
       pressure: weatherData.pressure,
