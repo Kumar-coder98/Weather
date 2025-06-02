@@ -99,23 +99,10 @@ header p {
   transform: scale(1.1);
 }
 
-@media (max-width: 768px) { /* Updated for better mobile responsiveness */
-  .search-bar {
-    flex-direction: column;
-    align-items: stretch;
-    max-width: 100%;
-  }
-
+@media (max-width: 480px) {
   .search-bar form {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .search-bar input[type="text"],
-  .search-bar button[type="submit"],
-  .search-bar .location-btn {
-    width: 100%;
-    margin: 0.5rem 0; /* Add spacing for elements */
+    flex-wrap: nowrap; /* Force same line */
+    gap: 0.3rem;
   }
 
   .search-bar input[type="text"] {
@@ -130,15 +117,13 @@ header p {
 }
 
 .search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6ee7b7;
-  font-size: 1.2rem;
-  pointer-events: none;
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 1.5em; /* Adjust size as needed */
+    padding: 10px; /* Padding inside buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
 }
-
 button {
   border-radius: 1rem;
   cursor: pointer;
@@ -243,6 +228,7 @@ button.location-btn:hover {
   display: block;
 }
 
+
 /* Forecast card */
 .forecast-card {
   display: flex;
@@ -339,7 +325,6 @@ footer a {
   font-weight: bold;
   color: #0a3d62;
 }
-
 .temp-icon-wrapper {
   display: flex;
   align-items: center;
