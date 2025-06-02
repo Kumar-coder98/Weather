@@ -74,13 +74,40 @@ async function getForecast(lat, lon) {
 function getCurrentLocation() {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error("Geolocation is not supported"));
+      reject(new Error('Geolocation is not supported by your browser.'));
       return;
     }
+
     navigator.geolocation.getCurrentPosition(
-      pos => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
-      err => reject(err),
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 600000 }
+      (position) => {
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        });
+      },
+      (error) => {
+        let message = '';
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            message = 'Location access denied. Please allow location access in your browser settings.';
+            break;
+          case error.POSITION_UNAVAILABLE:
+            message = 'Location information is unavailable.';
+            break;
+          case error.TIMEOUT:
+            message = 'Location request timed out.';
+            break;
+          default:
+            message = 'An unknown error occurred while fetching location.';
+            break;
+        }
+        reject(new Error(message));
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
     );
   });
 }
@@ -110,7 +137,7 @@ function showToast({ title, description, variant }) {
 // Render functions
 function renderWeatherCard(weather) {
   if (!weather) return;
- const iconUrl = customIcons[weather.icon] || "images/default.png";
+  const iconUrl = customIcons[weather.icon] || "images/default.png";
 
 
   weatherCard.innerHTML = `
@@ -221,7 +248,7 @@ function renderWeatherDetails(details) {
         <div class="detail-flex">
           <img src="https://cdn-icons-png.freepik.com/256/12276/12276857.png" alt="Sunrise Icon" class="detail-icon" />
           <div class="detail-value">${new Date(details.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}</div>
+    }</div>
         </div>
       </div>
       <div class="detail-item">
@@ -229,7 +256,7 @@ function renderWeatherDetails(details) {
         <div class="detail-flex">
           <img src="https://cdn-icons-png.freepik.com/256/4415/4415117.png" alt="Sunset Icon" class="detail-icon" />
           <div class="detail-value">${new Date(details.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}</div>
+    }</div>
         </div>
       </div>
     </div>
