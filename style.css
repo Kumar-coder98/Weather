@@ -99,10 +99,23 @@ header p {
   transform: scale(1.1);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) { /* Updated for better mobile responsiveness */
+  .search-bar {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 100%;
+  }
+
   .search-bar form {
-    flex-wrap: nowrap; /* Force same line */
-    gap: 0.3rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar input[type="text"],
+  .search-bar button[type="submit"],
+  .search-bar .location-btn {
+    width: 100%;
+    margin: 0.5rem 0; /* Add spacing for elements */
   }
 
   .search-bar input[type="text"] {
@@ -230,7 +243,6 @@ button.location-btn:hover {
   display: block;
 }
 
-
 /* Forecast card */
 .forecast-card {
   display: flex;
@@ -327,6 +339,7 @@ footer a {
   font-weight: bold;
   color: #0a3d62;
 }
+
 .temp-icon-wrapper {
   display: flex;
   align-items: center;
