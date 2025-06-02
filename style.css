@@ -34,29 +34,26 @@ header p {
 .search-bar {
   background: #f8f9fa;
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 1rem;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 600px; /* Add this line */
-  margin-left: auto;  /* Center it horizontally */
-  margin-right: auto; /* Center it horizontally */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
 
 .search-bar form {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 0.5rem;
 }
 
-.input-wrapper {
-  position: relative;
-  flex: 1;
-}
 .search-bar input[type="text"] {
+  flex: 1;
   padding: 0.75rem 1rem;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -66,44 +63,53 @@ header p {
 }
 
 .search-bar input[type="text"]:focus {
-  border: 1px solid #0f766e; /* Change border color on focus */
-}
-
-.search-bar button {
-  font-size: 1rem;
-  border: none;
-  border-radius: 1rem;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  padding: 0.75rem 1.5rem;
+  border-color: #0f766e;
 }
 
 .search-bar button[type="submit"] {
-  background-color: #0f766e; /* Main color */
+  background-color: #0f766e;
   color: white;
+  border: none;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .search-bar button[type="submit"]:hover {
   background-color: #115e59;
-  transform: translateY(-2px); /* Slight lift effect */
+  transform: translateY(-2px);
 }
 
 .search-bar .location-btn {
-  background-color: #d1fae5; 
+  background-color: #d1fae5;
   color: #065f46;
   width: 3rem;
   height: 3rem;
+  border-radius: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  border-radius: 50%; /* Make it rounded */
+  justify-content: center;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .search-bar .location-btn:hover {
   background-color: #a7f3d0;
-  transform: scale(1.1); /* Scale up effect */
+  transform: scale(1.1);
+}
+
+/* Optional: Responsive tweak for tighter mobile spacing */
+@media (max-width: 480px) {
+  .search-bar form {
+    gap: 0.3rem;
+  }
+
+  .search-bar button[type="submit"] {
+    padding: 0.65rem 1rem;
+  }
 }
 
 .search-icon {
