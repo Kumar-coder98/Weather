@@ -32,119 +32,88 @@ header p {
 }
 
 .search-bar {
-  background: #f8f9fa; /* Sets background color of the search bar */
-  border-radius: 1rem; /* Rounds the corners of the search bar */
-  padding: 1rem; /* Adds padding inside the search bar */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Adds shadow to give a 3D effect */
-  margin: 2rem auto; /* Centers the search bar on the page with vertical margin */
-  display: flex; /* Uses flexbox layout for children inside the search bar */
-  justify-content: center; /* Centers child elements horizontally */
-  max-width: 600px; /* Sets the maximum width of the search bar */
+  background: #f8f9fa;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px; /* Add this line */
+  margin-left: auto;  /* Center it horizontally */
+  margin-right: auto; /* Center it horizontally */
 }
+
 
 .search-bar form {
-  display: flex; /* Uses flexbox for the form layout */
-  gap: 0.5rem; /* Adds space between the form elements */
-  width: 100%; /* Sets the form width to fill the parent container */
-  align-items: center; /* Vertically centers items within the form */
-  max-width: 600px; /* Sets maximum width for the form */
-  flex-wrap: nowrap; /* Prevents wrapping of elements in the form */
-  justify-content: space-between; /* Ensures elements are spaced properly */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.input-wrapper {
+  position: relative;
+  flex: 1;
+}
 .search-bar input[type="text"] {
-  flex: 1; /* Allows the input to grow to fill the available space */
-  padding: 0.75rem 1rem; /* Adds padding within the input */
-  font-size: 1rem; /* Sets font size of input text */
-  border: 2px solid #2dd4bf; /* Sets a blue border for a more distinct appearance */
-  border-radius: 1rem; /* Rounds corners of the input */
-  outline: none; /* Removes default outline on focus */
-  transition: border 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for border and shadow */
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  outline: none;
+  transition: border 0.2s ease;
 }
 
 .search-bar input[type="text"]:focus {
-  border-color: #459891; /* Darker blue on focus */
-  box-shadow: 0 0 5px #459891; /* Adds a subtle glow effect */
+  border: 1px solid #0f766e; /* Change border color on focus */
 }
 
+.search-bar button {
+  font-size: 1rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  padding: 0.75rem 1.5rem;
+}
 
 .search-bar button[type="submit"] {
-  background-color: #0f766e; /* Sets background color of the submit button */
-  color: white; /* Sets text color of the button */
-  border: none; /* Removes border from the button */
-  border-radius: 1rem; /* Rounds corners of the button */
-  padding: 0.75rem 1.25rem; /* Adds padding within the button */
-  font-size: 1rem; /* Sets font size of button text */
-  font-weight: 500; /* Sets font weight for button text */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions for hover effects */
+  background-color: #0f766e; /* Main color */
+  color: white;
 }
 
 .search-bar button[type="submit"]:hover {
-  background-color: #115e59; /* Changes background color on hover */
-  transform: translateY(-2px); /* Moves button slightly up on hover */
+  background-color: #115e59;
+  transform: translateY(-2px); /* Slight lift effect */
 }
 
 .search-bar .location-btn {
-  background-color: #d1fae5; /* Sets background color for location button */
-  color: #065f46; /* Sets text color for location button */
-  width: 3rem; /* Sets width of the location button */
-  height: 3rem; /* Sets height of the location button */
-  border-radius: 50%; /* Makes the button circular */
-  display: flex; /* Uses flexbox for centering icon within the button */
-  justify-content: center; /* Centers icon horizontally */
-  align-items: center; /* Centers icon vertically */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition effects for hover */
-  flex-shrink: 0; /* Prevents button from shrinking */
-  border: none; /* Removes border from location button */
+  background-color: #d1fae5; 
+  color: #065f46;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%; /* Make it rounded */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .search-bar .location-btn:hover {
-  background-color: #a7f3d0; /* Changes background color on hover */
-  transform: scale(1.1); /* Scales the button up slightly on hover */
-}
-
-@media (max-width: 768px) {
-  .search-bar form {
-    flex-direction: column; /* Stacks elements vertically on smaller screens */
-    align-items: stretch; /* Ensures full width for inputs and buttons */
-    gap: 0.75rem; /* Adjusts spacing between elements */
-  }
-
-  .search-bar input[type="text"] {
-    font-size: 0.9rem; /* Reduces font size for better fit */
-    width: 100%; /* Makes input field full width */
-  }
-
-  .search-bar button[type="submit"],
-  .search-bar .location-btn {
-    width: 100%; /* Ensures buttons are full width */
-  }
-}
-
-@media (max-width: 480px) {
-  .search-bar form {
-    flex-wrap: wrap; /* Allows wrapping of elements */
-    justify-content: center; /* Centers elements */
-  }
-
-  .search-bar .location-btn {
-    width: 2.5rem; /* Adjusts button size */
-    height: 2.5rem;
-  }
-
-  .search-bar button[type="submit"] {
-    font-size: 0.85rem; /* Adjusts font size for smaller screens */
-  }
+  background-color: #a7f3d0;
+  transform: scale(1.1); /* Scale up effect */
 }
 
 .search-icon {
-    background-color: transparent; /* Sets a transparent background for the search icon */
-    border: none; /* Removes border from the search icon button */
-    cursor: pointer; /* Changes cursor to pointer on hover */
-    font-size: 1.5em; /* Sets font size for the search icon */
-    padding: 10px; /* Adds padding inside the search icon button */
-    border-radius: 5px; /* Rounds corners of the search icon button */
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6ee7b7;
+  font-size: 1.2rem;
+  pointer-events: none;
 }
 
 button {
