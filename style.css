@@ -249,41 +249,46 @@ footer {
 }
 @media (max-width: 600px) {
   .search-bar form {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .input-wrapper {
+    flex: 1 1 100%;
+  }
+
+  .search-bar input[type="text"] {
     width: 100%;
   }
 
-  .input-wrapper,
-  .search-bar input[type="text"],
-  .search-bar button,
+  .search-bar button[type="submit"],
   .search-bar .location-btn {
-    width: 100%;
-    margin: 0;
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0.75rem 1rem;
   }
 
   .search-bar {
     flex-direction: column;
+    align-items: stretch;
     padding: 1rem;
   }
 
   .search-bar .location-btn {
-    margin-top: 0.5rem;
-    width: 100%;
-    height: auto;
-    padding: 0.75rem 0;
+    height: 100%;
     border-radius: 1rem;
-  }
-
-  .search-bar button[type="submit"] {
-    margin-top: 0.5rem;
-  }
-
-  .weather-icon {
-    width: 35vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .weather-temp {
     font-size: 3.5rem;
+  }
+
+  .weather-icon {
+    width: 35vw;
   }
 }
