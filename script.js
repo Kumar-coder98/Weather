@@ -125,6 +125,31 @@ const weatherDetails = document.getElementById('weather-details');
 // State
 let currentCoordinates = null;
 
+// Background settings
+document.body.style.background = 'linear-gradient(to bottom right, #2dd4bf, #14b8a6, #0f766e)';
+
+// Weather GIFs based on conditions
+const weatherGifs = {
+  "01d": "clearsky.jpg", // Clear Day
+  "01n": "clearnight.jpg", // Clear Night
+  "02d": "fewcloudsday.jpg", // Few Clouds Day
+  "02n": "fewcloudsnight.jpg", // Few Clouds Night
+  "03d": "scatteredclouds.jpg", // Scattered Clouds
+  "03n": "scatteredclouds.jpg",
+  "04d": "brokenclouds.jpg", // Broken Clouds
+  "04n": "brokenclouds.jpg",
+  "09d": "rain.png", // Shower Rain
+  "09n": "rain.png",
+  "10d": "rain.png", // Rain
+  "10n": "rain.png",
+  "11d": "thunderstrom.jpg", // Thunderstorm
+  "11n": "thunderstrom.jpg",
+  "13d": "snow.jpg", // Snow
+  "13n": "snow.jpg",
+  "50d": "mist.jpg", // Mist/Fog
+  "50n": "mist.jpg"
+};
+
 // Helper: Show toast messages (simple)
 function showToast({ title, description, variant }) {
   if (variant === 'destructive') {
@@ -135,19 +160,24 @@ function showToast({ title, description, variant }) {
 }
 
 // Render functions
-function renderWeatherCard(weather) {
+function renderWeatherCard(weather, forecastData) {
   if (!weather) return;
   const iconUrl = customIcons[weather.icon] || "images/default.png";
 
-
   weatherCard.innerHTML = `
     <h2>${weather.name}, ${weather.country}</h2>
-    <img src="${iconUrl}" alt="${weather.description}" class="weather-icon" />
-    <p class="desc">${weather.description}</p>
     <p class="weather-temp">${Math.round(weather.temp)}&deg;C</p>
     <p>Feels like: ${Math.round(weather.feels_like)}&deg;C</p>
+    <img src="${iconUrl}" alt="${weather.description}" class="weather-icon" />
+    <p class="desc">${weather.description}</p>
+    <canvas id="temperatureChart" width="400" height="200"></canvas>
   `;
+
+  // Call the function to render the chart
+  renderTemperatureChart(forecastData);
 }
+
+
 const customIcons = {
   "01d": "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
   "01n": "https://cdn-icons-png.freepik.com/256/10440/10440114.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
@@ -169,8 +199,6 @@ const customIcons = {
   "50n": "https://cdn-icons-png.freepik.com/256/13594/13594982.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming"
 };
 
-
-
 function renderForecastCard(forecast) {
   if (!forecast || forecast.length === 0) {
     forecastCard.innerHTML = '<p>No forecast data available.</p>';
@@ -179,7 +207,7 @@ function renderForecastCard(forecast) {
   const itemsHtml = forecast.map(day => {
     const dateObj = new Date(day.date);
     const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    const formattedDate = dateObj.toLocaleDateString(undefined, options);
+    const formattedDate = dateObj.toLocaleDateString([], options);
     return `
     <div class="forecast-day">
       <div class="forecast-date">${formattedDate}</div>
@@ -243,7 +271,7 @@ function renderWeatherDetails(details) {
           <div class="detail-value">${Math.round(details.feels_like)}&deg;C</div>
         </div>
       </div>
-      <div class="detail-item">
+      <div class="detail-item sunrise">
         <div class="detail-label">Sunrise</div>
         <div class="detail-flex">
           <img src="https://cdn-icons-png.freepik.com/256/12276/12276857.png" alt="Sunrise Icon" class="detail-icon" />
@@ -251,7 +279,7 @@ function renderWeatherDetails(details) {
     }</div>
         </div>
       </div>
-      <div class="detail-item">
+      <div class="detail-item sunset">
         <div class="detail-label">Sunset</div>
         <div class="detail-flex">
           <img src="https://cdn-icons-png.freepik.com/256/4415/4415117.png" alt="Sunset Icon" class="detail-icon" />
@@ -261,6 +289,46 @@ function renderWeatherDetails(details) {
       </div>
     </div>
   `;
+}
+function renderTemperatureChart(forecastData) {
+  const ctx = document.getElementById('temperatureChart').getContext('2d');
+  
+  // Prepare data for the chart
+  const labels = forecastData.map(day => day.date);
+  const temperatures = forecastData.map(day => (day.temp_max + day.temp_min) / 2); // Average temperature
+
+  const temperatureChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Temperature (°C)',
+        data: temperatures,
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderWidth: 2,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Temperature (°C)'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Date'
+          }
+        }
+      }
+    }
+  });
 }
 
 async function loadWeatherData(lat, lon) {
@@ -275,7 +343,7 @@ async function loadWeatherData(lat, lon) {
 
     currentCoordinates = { lat, lon };
 
-    renderWeatherCard(weatherData);
+    renderWeatherCard(weatherData, forecastData); // Pass forecastData here
     renderForecastCard(forecastData);
     renderWeatherDetails({
       pressure: weatherData.pressure,
@@ -287,6 +355,14 @@ async function loadWeatherData(lat, lon) {
       sunrise: weatherData.sunrise,
       sunset: weatherData.sunset,
     });
+
+    // Change background to GIF based on weather condition
+    const iconCode = weatherData.icon; // Get the icon code (e.g., "01d")
+    const gifUrl = weatherGifs[iconCode] || 'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif'; // Default fallback
+    document.body.style.backgroundImage = `url(${gifUrl})`;
+    document.body.style.backgroundSize = 'cover'; // Ensures the image covers the entire background
+    document.body.style.backgroundRepeat = 'no-repeat'; // Prevents the image from repeating
+    document.body.style.backgroundPosition= 'center'; // Centers the image
 
     weatherContainer.style.display = 'block';
     showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}` });
@@ -328,10 +404,20 @@ async function searchCity(city) {
       sunset: weatherData.sunset,
     });
 
+    // Change background to GIF based on weather condition
+    const iconCode = weatherData.icon; // Get the icon code (e.g., "01d")
+    const gifUrl = weatherGifs[iconCode] || 'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif'; // Default fallback
+    document.body.style.backgroundImage = `url(${gifUrl})`;
+    document.body.style.backgroundSize = 'cover'; // Ensures the image covers the entire background
+    document.body.style.backgroundRepeat = 'no-repeat'; // Prevents the image from repeating
+    document.body.style.backgroundPosition= 'center'; // Centers the image
+
     weatherContainer.style.display = 'block';
     showToast({ title: "City found", description: `Weather data for ${weatherData.name}` });
   } catch (err) {
     console.error(err);
+    // Set the background to a default image when the city is not found
+     document.body.style.background = 'linear-gradient(to bottom right, #2dd4bf, #14b8a6, #0f766e)'; // Reset to your initial gradient
     showToast({ variant: 'destructive', title: "City not found", description: "Please check the city name and try again." });
     weatherContainer.style.display = 'none';
   } finally {
@@ -339,27 +425,9 @@ async function searchCity(city) {
   }
 }
 
+
 function showLoading(isLoading) {
   loadingDiv.style.display = isLoading ? 'block' : 'none';
-}
-function getCurrentLocation() {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error("Geolocation not supported"));
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          });
-        },
-        (error) => {
-          reject(error);
-        }
-      );
-    }
-  });
 }
 
 async function handleLocationClick() {
