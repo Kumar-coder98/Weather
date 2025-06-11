@@ -85,7 +85,7 @@ body::before {
     justify-content: center;
     align-items: center;
     gap: 1.2rem;
-    max-width: 350px;
+    max-width: 750px;
     margin: 0 auto;
     border: 1px solid rgba(255, 255, 255, 0.7);
     animation: fadeIn 1s ease-out forwards;
@@ -135,7 +135,7 @@ body::before {
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     flex-shrink: 0; /* Prevent button from shrinking */
 }
@@ -288,12 +288,13 @@ body::before {
     z-index: 2;
 }
 
-.weather-card p:nth-of-type(2) {
-    /* Time */
-    font-size: 1.2rem;
-    color: #64748b;
-    margin-bottom: 0.5rem;
+/* Added specific class for date and time */
+.weather-datetime-text {
+    font-size: 1rem; /* Smaller font size for date and time */
+    color: #64748b; /* Keep consistent color */
+    margin-bottom: 0.2rem; /* Reduce space between date and time */
 }
+
 
 .weather-card p:nth-of-type(3) {
     /* Feels like */
@@ -608,35 +609,42 @@ footer {
 
     /* --- SEARCH BAR FIXES FOR MOBILE --- */
     .search-bar {
-        /* Force nowrap to keep items in a row, let overflow be handled by scaling/scrolling if needed */
         flex-wrap: nowrap;
-        justify-content: space-between; /* Distribute space between form and location button */
-        gap: 0.8rem; /* Maintain gap */
-        padding: 1rem 1.2rem; /* Slightly tighter padding */
+        justify-content: space-between;
+        gap: 0.8rem;
+        padding: 1rem 1.2rem;
         border-radius: 1rem;
+        /* Ensure that search bar maintains its horizontal alignment */
+        display: flex; /* Ensure it's a flex container */
+        flex-direction: row; /* Ensure elements are in a row */
+        align-items: center; /* Vertically align items */
     }
     .search-bar form {
-        flex-grow: 1; /* Allow form to take available space */
-        flex-shrink: 1; /* Allow form to shrink if needed */
-        min-width: 150px; /* Minimum width for the form itself */
-        gap: 0.5rem; /* Tighter gap between input and button */
+        flex-grow: 1;
+        flex-shrink: 1;
+        min-width: 150px;
+        gap: 0.5rem;
+        /* Ensure form itself is a flex container for its children */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .search-bar input[type="text"] {
         font-size: 0.9rem;
-        padding: 0.6rem 0.8rem; /* Slightly tighter padding */
+        padding: 0.6rem 0.8rem;
         border-radius: 0.8rem;
-        min-width: 0; /* Allow input to shrink to 0 if needed (flex magic) */
+        min-width: 0;
     }
     .search-bar button[type="submit"] {
         font-size: 0.9rem;
-        padding: 0.6rem 1rem; /* Slightly tighter padding */
+        padding: 0.6rem 1rem;
         border-radius: 0.8rem;
         flex-shrink: 0;
     }
     .search-bar .location-btn {
         width: 3rem;
         height: 3rem;
-        flex-shrink: 0; /* Important: Prevent location button from shrinking */
+        flex-shrink: 0;
     }
     /* --- END SEARCH BAR FIXES --- */
 
@@ -654,8 +662,9 @@ footer {
     .weather-card h2 {
         font-size: 2.2rem;
     }
-    .weather-temp {
-        font-size: 4.8rem; /* **FIXED: Explicitly set for tablet** */
+    /* ENSURING TEMPERATURE REMAINS LARGE */
+    .weather-card .weather-temp {
+        font-size: 4.8rem !important; /* Added !important to enforce size */
     }
     .weather-card p {
         font-size: 0.9rem;
@@ -718,20 +727,28 @@ footer {
     /* --- SEARCH BAR FIXES FOR SMALL MOBILE --- */
     .search-bar {
         padding: 0.8rem 1rem;
-        gap: 0.4rem; /* Even tighter gap for very small screens */
+        gap: 0.4rem;
+        /* Ensure that search bar maintains its horizontal alignment */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .search-bar form {
-        min-width: 100px; /* Further reduced min-width for the form */
-        gap: 0.3rem; /* Smallest gap between input and button */
+        min-width: 100px;
+        gap: 0.3rem;
+        /* Ensure form itself is a flex container for its children */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .search-bar input[type="text"] {
         font-size: 0.8rem;
-        padding: 0.4rem 0.5rem; /* Even tighter padding */
-        min-width: 0; /* Ensure it can shrink as much as needed */
+        padding: 0.4rem 0.5rem;
+        min-width: 0;
     }
     .search-bar button[type="submit"] {
         font-size: 0.8rem;
-        padding: 0.4rem 0.7rem; /* Even tighter padding */
+        padding: 0.4rem 0.7rem;
     }
     .search-bar .location-btn {
         width: 2.5rem;
@@ -753,8 +770,9 @@ footer {
     .weather-card h2 {
         font-size: 1.8rem;
     }
-    .weather-temp {
-        font-size: 4.8rem; /* **FIXED: Explicitly set for small mobile** */
+    /* ENSURING TEMPERATURE REMAINS LARGE */
+    .weather-card .weather-temp {
+        font-size: 4.8rem !important; /* Added !important to enforce size */
     }
     .weather-card p {
         font-size: 0.8rem;
@@ -970,18 +988,5 @@ footer {
         font-size: 1.2rem;
         top: 0.4rem;
         right: 0.5rem;
-    }
-}
-/* Styles for date and time text in weather card */
-.weather-datetime-text {
-    font-size: 1rem; /* Smaller font size for date and time */
-    color: #64748b; /* Keep consistent color */
-    margin-bottom: 0.2rem; /* Reduce space between date and time */
-}
-
-/* Adjustments for even smaller screens if needed */
-@media (max-width: 480px) {
-    .weather-datetime-text {
-        font-size: 0.85rem; /* Even smaller for very small mobile screens */
     }
 }
