@@ -3,12 +3,7 @@ body {
     margin: 0;
     font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    /* --- CRITICAL FIX: Explicitly set background-color for consistent base --- */
     background-color: #21726a; /* This is the solid dark teal color from your image */
-    
-    /* background-image will be dynamically set by JS */
-    /* background-image: url('your-image.jpg'); */ /* Remove or keep as a placeholder, JS will override */
-
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -17,11 +12,9 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    /* --- MODIFIED: Align content to the center vertically --- */
-    align-items: center; /* Changed from flex-start to center */ 
+    align-items: center; /* Changed from flex-start to center */
     padding: 25px; /* Increased overall padding for desktop/large tablet */
-    /* Transition only background-image; background-color stays constant */
-    transition: background-image 0.8s ease-in-out; 
+    transition: background-image 0.8s ease-in-out;
     overflow-x: hidden;
     position: relative; /* Needed for pseudo-element overlay */
 }
@@ -213,9 +206,6 @@ body::before {
 /* Weather Grid and Cards */
 #weather-container {
     display: none;
-    /* --- REMOVED ANIMATION FROM HERE --- */
-    /* animation: fadeIn 1s ease-out forwards; */
-    /* animation-delay: 0.4s; */
     opacity: 0; /* Keep initial opacity hidden */
 }
 
@@ -350,13 +340,14 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.6);
     transition: background-color 0.2s ease, transform 0.2s ease;
 
-    /* --- NEW LAYOUT FOR forecast-day: Column flex, centered content --- */
+    /* REVISED LAYOUT FOR forecast-day: Ensure elements within are centered and spaced */
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Center horizontally */
-    text-align: center; /* Center text within description */
-    gap: 0.8rem; /* Gap between main sections (date/temps and icon/desc) */
-    width: 85%; /* Ensure it takes full width of its parent */
+    flex-direction: column; /* Stack date/temps group and icon/description group */
+    align-items: center; /* Center content horizontally */
+    text-align: center; /* Center text within individual elements if they don't fill width */
+    gap: 0.8rem; /* Space between the two main groups */
+    width: 100%; /* Ensure it takes full width of its parent */
+    box-sizing: border-box; /* Include padding in width */
 }
 
 .forecast-day:hover {
@@ -369,14 +360,13 @@ body::before {
     justify-content: space-between; /* Push date to left, temps to right */
     align-items: center;
     width: 100%; /* Take full width of parent .forecast-day */
-    margin-bottom: 0.5rem; /* Space between date/temps and icon/desc */
+    /* Remove margin-bottom as gap handles spacing */
 }
 
 .forecast-date {
     font-weight: 600;
     font-size: 1.15rem;
     color: #1e293b;
-    /* Removed flex: 1 as it's now handled by justify-content: space-between */
 }
 
 .forecast-max-min-temps {
@@ -390,14 +380,13 @@ body::before {
     font-weight: 700;
     font-size: 1.1rem;
     color: #38bdf8;
-    /* Removed flex-basis: auto as it's now a column item */
 }
 
 .forecast-icon-description-group {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center icon and description */
-    margin-top: 0.3rem; /* Space between temps and icon/desc group */
+    /* Remove margin-top as gap handles spacing */
 }
 
 .forecast-icon-small { /* New class for the smaller icon in forecast */
@@ -418,14 +407,11 @@ body::before {
 /* Media queries for smaller screens need adjustment too */
 @media (max-width: 768px) {
     .forecast-day {
-        /* Keep column flex and center alignment */
         gap: 0.6rem; /* Tighter gap */
         padding: 1rem 1.2rem; /* Reduced padding */
         border-radius: 1rem;
     }
-    .forecast-date-temps {
-        margin-bottom: 0.4rem;
-    }
+    /* Removed .forecast-date-temps margin-bottom */
     .forecast-date {
         font-size: 0.95rem; /* Smaller date font */
     }
@@ -451,9 +437,7 @@ body::before {
         padding: 0.8rem 1rem;
         border-radius: 0.8rem;
     }
-    .forecast-date-temps {
-        margin-bottom: 0.3rem;
-    }
+    /* Removed .forecast-date-temps margin-bottom */
     .forecast-date {
         font-size: 0.85rem;
     }
@@ -545,6 +529,11 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.6);
     transition: background-color 0.2s ease, transform 0.2s ease;
     width: 100%;
+    /* Ensure content within detail item is centered */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .detail-item:hover {
@@ -640,7 +629,6 @@ footer p {
 /* Initial hidden state for animated elements (except for #location-time, which is display:none) */
 .weather-header,
 .search-bar,
-/* #weather-container, <-- REMOVED FROM HERE */
 footer {
     opacity: 0;
 }
@@ -740,9 +728,7 @@ footer {
         padding: 1rem 1.2rem; /* Reduced padding */
         border-radius: 1rem;
     }
-    .forecast-date-temps {
-        margin-bottom: 0.4rem;
-    }
+    /* Removed .forecast-date-temps margin-bottom */
     .forecast-date {
         font-size: 0.95rem; /* Smaller date font */
     }
