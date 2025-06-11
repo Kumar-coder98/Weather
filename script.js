@@ -478,15 +478,17 @@ async function loadWeatherData(lat, lon) {
         weatherContainer.style.display = 'block'; // Make weather container visible
         weatherContainer.classList.add('fade-in'); // Apply fade-in animation
 
-        // --- MODIFIED SCROLL BEHAVIOR TO TARGET WEATHER CARD ---
-        // Smooth scroll to the weather card (which contains the temperature)
-        if (weatherCard) {
-            weatherCard.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start' // This will place the top of the weather card at the top of the viewport
-            });
+        // --- Conditional Scroll Behavior ---
+        if (window.innerWidth > 768) { // Check if the view is desktop
+            // Smooth scroll to the weather card (which contains the temperature)
+            if (weatherCard) {
+                weatherCard.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // This will place the top of the weather card at the top of the viewport
+                });
+            }
         }
-        // --- END MODIFIED SCROLL BEHAVIOR ---
+        // --- End Conditional Scroll Behavior ---
 
         const fullCountryName = countryNames[weatherData.country] || weatherData.country;
         showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}, ${fullCountryName}`, variant: 'success' }); // Added success variant
