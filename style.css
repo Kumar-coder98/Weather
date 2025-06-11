@@ -135,7 +135,7 @@ body::before {
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
-    padding: 1rem 1rem;
+    padding: 1rem 2rem;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     flex-shrink: 0; /* Prevent button from shrinking */
 }
@@ -444,11 +444,13 @@ body::before {
 
 .details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    /* Adjusted minmax to allow items to stay on one line more easily */
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Slightly reduced min-width */
     gap: 1.5rem;
     justify-items: center;
 }
 
+/* Only apply column spanning when there's enough horizontal space */
 @media (min-width: 768px) {
     .details-grid {
         grid-template-columns: repeat(4, 1fr);
@@ -459,6 +461,7 @@ body::before {
     }
 }
 
+/* For larger desktops, specifically targeting the desired 6-column layout */
 @media (min-width: 1024px) {
     .details-grid {
         grid-template-columns: repeat(6, 1fr);
@@ -614,17 +617,15 @@ footer {
         gap: 0.8rem;
         padding: 1rem 1.2rem;
         border-radius: 1rem;
-        /* Ensure that search bar maintains its horizontal alignment */
-        display: flex; /* Ensure it's a flex container */
-        flex-direction: row; /* Ensure elements are in a row */
-        align-items: center; /* Vertically align items */
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
     .search-bar form {
         flex-grow: 1;
         flex-shrink: 1;
         min-width: 150px;
         gap: 0.5rem;
-        /* Ensure form itself is a flex container for its children */
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -662,9 +663,8 @@ footer {
     .weather-card h2 {
         font-size: 2.2rem;
     }
-    /* ENSURING TEMPERATURE REMAINS LARGE */
     .weather-card .weather-temp {
-        font-size: 4.8rem !important; /* Added !important to enforce size */
+        font-size: 4.8rem !important; /* Enforce large size */
     }
     .weather-card p {
         font-size: 0.9rem;
@@ -728,7 +728,6 @@ footer {
     .search-bar {
         padding: 0.8rem 1rem;
         gap: 0.4rem;
-        /* Ensure that search bar maintains its horizontal alignment */
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -736,7 +735,6 @@ footer {
     .search-bar form {
         min-width: 100px;
         gap: 0.3rem;
-        /* Ensure form itself is a flex container for its children */
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -770,9 +768,8 @@ footer {
     .weather-card h2 {
         font-size: 1.8rem;
     }
-    /* ENSURING TEMPERATURE REMAINS LARGE */
     .weather-card .weather-temp {
-        font-size: 4.8rem !important; /* Added !important to enforce size */
+        font-size: 4.8rem !important; /* Enforce large size */
     }
     .weather-card p {
         font-size: 0.8rem;
@@ -813,8 +810,9 @@ footer {
         margin-top: 1.2rem;
     }
     .details-grid {
-        gap: 0.6rem;
-        grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+        /* Adjusted minmax for very small screens to ensure items fit */
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Adjusted min-width for very small screens */
+        gap: 0.6rem; /* Tighter gap for very small screens */
     }
     .detail-item {
         padding: 0.6rem;
