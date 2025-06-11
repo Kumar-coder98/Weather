@@ -274,7 +274,7 @@ body::before {
 }
 
 .weather-temp {
-    font-size: 4.8rem;
+    font-size: 4.8rem; /* Desktop size, will be consistent */
     font-weight: 900;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -340,14 +340,13 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.6);
     transition: background-color 0.2s ease, transform 0.2s ease;
 
-    /* REVISED LAYOUT FOR forecast-day: Ensure elements within are centered and spaced */
     display: flex;
-    flex-direction: column; /* Stack date/temps group and icon/description group */
-    align-items: center; /* Center content horizontally */
-    text-align: center; /* Center text within individual elements if they don't fill width */
-    gap: 0.8rem; /* Space between the two main groups */
-    width: 100%; /* Ensure it takes full width of its parent */
-    box-sizing: border-box; /* Include padding in width */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .forecast-day:hover {
@@ -357,10 +356,9 @@ body::before {
 
 .forecast-date-temps {
     display: flex;
-    justify-content: space-between; /* Push date to left, temps to right */
+    justify-content: space-between;
     align-items: center;
-    width: 100%; /* Take full width of parent .forecast-day */
-    /* Remove margin-bottom as gap handles spacing */
+    width: 100%;
 }
 
 .forecast-date {
@@ -371,9 +369,9 @@ body::before {
 
 .forecast-max-min-temps {
     display: flex;
-    flex-direction: column; /* Stack max and min temps */
-    align-items: flex-end; /* Align temps to the right */
-    gap: 0.2rem; /* Small gap between max and min */
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
 }
 
 .forecast-temp {
@@ -385,74 +383,23 @@ body::before {
 .forecast-icon-description-group {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center icon and description */
-    /* Remove margin-top as gap handles spacing */
+    align-items: center;
 }
 
 .forecast-icon-small { /* New class for the smaller icon in forecast */
-    height: 60px; /* Increased size for prominence */
+    height: 60px;
     width: 60px;
     object-fit: contain;
-    margin-bottom: 0.3rem; /* Space between icon and description */
+    margin-bottom: 0.3rem;
 }
 
 .forecast-description { /* New class for the description */
     text-transform: capitalize;
     color: #475569;
-    font-size: 1.05rem; /* Adjusted font size */
+    font-size: 1.05rem;
     font-weight: 500;
 }
 
-
-/* Media queries for smaller screens need adjustment too */
-@media (max-width: 768px) {
-    .forecast-day {
-        gap: 0.6rem; /* Tighter gap */
-        padding: 1rem 1.2rem; /* Reduced padding */
-        border-radius: 1rem;
-    }
-    /* Removed .forecast-date-temps margin-bottom */
-    .forecast-date {
-        font-size: 0.95rem; /* Smaller date font */
-    }
-    .forecast-max-min-temps {
-        gap: 0.1rem; /* Even smaller gap */
-    }
-    .forecast-temp {
-        font-size: 0.9rem; /* Smaller temp font */
-    }
-    .forecast-icon-small {
-        height: 50px; /* Smaller icon for mobile */
-        width: 50px;
-        margin-bottom: 0.4rem;
-    }
-    .forecast-description {
-        font-size: 0.9rem; /* Smaller description font */
-    }
-}
-
-@media (max-width: 480px) {
-    .forecast-day {
-        gap: 0.5rem;
-        padding: 0.8rem 1rem;
-        border-radius: 0.8rem;
-    }
-    /* Removed .forecast-date-temps margin-bottom */
-    .forecast-date {
-        font-size: 0.85rem;
-    }
-    .forecast-temp {
-        font-size: 0.8rem;
-    }
-    .forecast-icon-small {
-        height: 40px;
-        width: 40px;
-        margin-bottom: 0.3rem;
-    }
-    .forecast-description {
-        font-size: 0.8rem;
-    }
-}
 
 /* Location Time Card (FIXED: Hidden by default when empty) */
 #location-time {
@@ -529,7 +476,6 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.6);
     transition: background-color 0.2s ease, transform 0.2s ease;
     width: 100%;
-    /* Ensure content within detail item is centered */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -684,6 +630,8 @@ footer {
     .search-bar .location-btn {
         width: 3rem; /* Smaller */
         height: 3rem;
+        /* Ensure it's centered horizontally when stacked */
+        margin: 0 auto; /* Added for explicit horizontal centering */
     }
     .search-bar .location-btn img {
         height: 22px; /* Smaller icon */
@@ -704,7 +652,7 @@ footer {
         font-size: 2.2rem; /* Smaller */
     }
     .weather-temp {
-        font-size: 4rem; /* Smaller, but still prominent */
+        font-size: 4.8rem; /* **FIXED: Now consistent with desktop** */
     }
     .weather-card p {
         font-size: 0.9rem; /* Smaller */
@@ -723,12 +671,10 @@ footer {
         gap: 0.8rem; /* Reduced gap */
     }
     .forecast-day {
-        /* Keep column flex and center alignment */
         gap: 0.6rem; /* Tighter gap */
         padding: 1rem 1.2rem; /* Reduced padding */
         border-radius: 1rem;
     }
-    /* Removed .forecast-date-temps margin-bottom */
     .forecast-date {
         font-size: 0.95rem; /* Smaller date font */
     }
@@ -781,6 +727,8 @@ footer {
     .search-bar .location-btn {
         width: 2.5rem; /* Even smaller */
         height: 2.5rem;
+        /* Ensure it's centered horizontally when stacked */
+        margin: 0 auto; /* Added for explicit horizontal centering */
     }
     .search-bar .location-btn img {
         height: 18px; /* Even smaller icon */
@@ -801,7 +749,7 @@ footer {
         font-size: 1.8rem; /* Even smaller */
     }
     .weather-temp {
-        font-size: 3rem; /* Even smaller */
+        font-size: 4.8rem; /* **FIXED: Now consistent with desktop** */
     }
     .weather-card p {
         font-size: 0.8rem; /* Even smaller */
