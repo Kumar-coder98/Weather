@@ -143,24 +143,24 @@ let currentCoordinates = null;
 
 // Background images mapping OpenWeatherMap icons to high-quality GIF links
 const weatherGifs = {
-    "01d": "clearsky.jpg", // Clear Day
-    "01n": "clearnight.jpg", // Clear Night
-    "02d": "fewcloudsday.jpg", // Few Clouds Day
-    "02n": "fewcloudsnight.jpg", // Few Clouds Night
-    "03d": "scatteredclouds.jpg", // Scattered Clouds
-    "03n": "scatteredclouds.jpg",
-    "04d": "brokenclouds.jpg", // Broken Clouds
-    "04n": "brokenclouds.jpg",
-    "09d": "rain.png", // Shower Rain
-    "09n": "rain.png",
-    "10d": "rain.png", // Rain
-    "10n": "rain.png",
-    "11d": "thunderstrom.jpg", // Thunderstorm
-    "11n": "thunderstrom.jpg",
-    "13d": "snow.jpg", // Snow
-    "13n": "snow.jpg",
-    "50d": "mist.jpg", // Mist/Fog
-    "50n": "mist.jpg"
+  "01d": "clearsky.jpg", // Clear Day
+  "01n": "clearnight.jpg", // Clear Night
+  "02d": "fewcloudsday.jpg", // Few Clouds Day
+  "02n": "fewcloudsnight.jpg", // Few Clouds Night
+  "03d": "scatteredclouds.jpg", // Scattered Clouds
+  "03n": "scatteredclouds.jpg",
+  "04d": "brokenclouds.jpg", // Broken Clouds
+  "04n": "brokenclouds.jpg",
+  "09d": "rain.png", // Shower Rain
+  "09n": "rain.png",
+  "10d": "rain.png", // Rain
+  "10n": "rain.png",
+  "11d": "thunderstrom.jpg", // Thunderstorm
+  "11n": "thunderstrom.jpg",
+  "13d": "snow.jpg", // Snow
+  "13n": "snow.jpg",
+  "50d": "mist.jpg", // Mist/Fog
+  "50n": "mist.jpg"
 };
 
 
@@ -302,8 +302,8 @@ function renderWeatherCard(weather) {
         <h2 id="location-display">${weather.name}, ${fullCountryName}</h2>
         <br>
         <p class="weather-temp">${Math.round(weather.temp)}&deg;C</p>
-        <p class="weather-datetime-text">Date: ${formattedCityDate}</p> <!-- Added new class -->
-        <p class="weather-datetime-text">Time: ${formattedCityTime}</p> <!-- Added new class -->
+        <p>Date: ${formattedCityDate}</p> <!-- Display city's local date with year -->
+        <p>Time: ${formattedCityTime}</p> <!-- Display city's local time -->
         <p>Feels like: ${Math.round(weather.feels_like)}&deg;C</p>
         <img src="${iconUrl}" alt="${weather.description}" class="weather-icon" />
         <p class="desc">${weather.description}</p>
@@ -488,9 +488,6 @@ async function loadWeatherData(lat, lon) {
         showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}, ${fullCountryName}`, variant: 'success' }); // Added success variant
     } catch (err) {
         console.error("Error loading weather data:", err);
-        // Reset background to the specified solid dark teal color on error
-        document.body.style.background = '#1e4b47'; 
-        // Show destructive toast message for invalid city
         showToast({ variant: 'destructive', title: "Error", description: "Failed to load weather data. Please try again. " + err.message });
         weatherContainer.style.display = 'none'; // Hide weather container on error
     } finally {
@@ -515,7 +512,7 @@ async function searchCity(city) {
         renderWeatherCard(weatherData); // Render current weather
 
         if (currentCoordinates) {
-            const forecastData = await getForecast(currentCoordinates.lat, currentCoordinates.isAuthReady);
+            const forecastData = await getForecast(currentCoordinates.lat, currentCoordinates.lon);
             renderForecastCard(forecastData); // Render 5-day forecast
         } else {
             forecastCard.innerHTML = '<p style="text-align: center; color: #64748b; font-size: 1rem;">No forecast data available.</p>';
@@ -593,3 +590,9 @@ window.addEventListener('load', () => {
     document.body.style.backgroundColor = '#1e4b47'; 
     handleLocationClick();
 });
+
+// Initial classes for fade-in elements (CSS manages initial opacity: 0)
+// These classes are added by JS when the element is ready to be shown
+// weatherCard.classList.add('fade-in'); // No need to add here, done in loadWeatherData/searchCity
+// forecastCard.classList.add('fade-in'); // No need to add here, done in loadWeatherData/searchCity
+// weatherDetails.classList.add('fade-in'); // No need to add here, done in loadWeatherData/searchCity
