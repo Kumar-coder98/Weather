@@ -137,30 +137,31 @@ const weatherCard = document.getElementById('weather-card'); // Element for curr
 const forecastCard = document.getElementById('forecast-card'); // Element for 5-day forecast display
 const weatherDetails = document.getElementById('weather-details'); // Element for detailed weather info
 const toastContainer = document.getElementById('toast-container'); // Container for toast messages
+// Removed weatherHeader variable as it's no longer needed for scrolling
 
 // State
 let currentCoordinates = null;
 
 // Background images mapping OpenWeatherMap icons to high-quality GIF links
 const weatherGifs = {
-  "01d": "clearsky.jpg", // Clear Day
-  "01n": "clearnight.jpg", // Clear Night
-  "02d": "fewcloudsday.jpg", // Few Clouds Day
-  "02n": "fewcloudsnight.jpg", // Few Clouds Night
-  "03d": "scatteredclouds.jpg", // Scattered Clouds
-  "03n": "scatteredclouds.jpg",
-  "04d": "brokenclouds.jpg", // Broken Clouds
-  "04n": "brokenclouds.jpg",
-  "09d": "rain.png", // Shower Rain
-  "09n": "rain.png",
-  "10d": "rain.png", // Rain
-  "10n": "rain.png",
-  "11d": "thunderstrom.jpg", // Thunderstorm
-  "11n": "thunderstrom.jpg",
-  "13d": "snow.jpg", // Snow
-  "13n": "snow.jpg",
-  "50d": "mist.jpg", // Mist/Fog
-  "50n": "mist.jpg"
+    "01d": "clearsky.jpg", // Clear Day
+    "01n": "clearnight.jpg", // Clear Night
+    "02d": "fewcloudsday.jpg", // Few Clouds Day
+    "02n": "fewcloudsnight.jpg", // Few Clouds Night
+    "03d": "scatteredclouds.jpg", // Scattered Clouds
+    "03n": "scatteredclouds.jpg",
+    "04d": "brokenclouds.jpg", // Broken Clouds
+    "04n": "brokenclouds.jpg",
+    "09d": "rain.png", // Shower Rain
+    "09n": "rain.png",
+    "10d": "rain.png", // Rain
+    "10n": "rain.png",
+    "11d": "thunderstrom.jpg", // Thunderstorm
+    "11n": "thunderstrom.jpg",
+    "13d": "snow.jpg", // Snow
+    "13n": "snow.jpg",
+    "50d": "mist.jpg", // Mist/Fog
+    "50n": "mist.jpg"
 };
 
 
@@ -302,8 +303,8 @@ function renderWeatherCard(weather) {
         <h2 id="location-display">${weather.name}, ${fullCountryName}</h2>
         <br>
         <p class="weather-temp">${Math.round(weather.temp)}&deg;C</p>
-        <p>Date: ${formattedCityDate}</p> <!-- Display city's local date with year -->
-        <p>Time: ${formattedCityTime}</p> <!-- Display city's local time -->
+        <p class="weather-datetime-text">Date: ${formattedCityDate}</p> <!-- Added new class -->
+        <p class="weather-datetime-text">Time: ${formattedCityTime}</p> <!-- Added new class -->
         <p>Feels like: ${Math.round(weather.feels_like)}&deg;C</p>
         <img src="${iconUrl}" alt="${weather.description}" class="weather-icon" />
         <p class="desc">${weather.description}</p>
@@ -478,11 +479,13 @@ async function loadWeatherData(lat, lon) {
         weatherContainer.style.display = 'block'; // Make weather container visible
         weatherContainer.classList.add('fade-in'); // Apply fade-in animation
 
+        // --- REVERTED SCROLL BEHAVIOR TO WEATHER CONTAINER ---
         // Smooth scroll to the weather container after data is loaded
         weatherContainer.scrollIntoView({
             behavior: 'smooth',
-            block: 'start'
+            block: 'start' // This will place the top of the container at the top of the viewport
         });
+        // --- END REVERTED SCROLL BEHAVIOR ---
 
         const fullCountryName = countryNames[weatherData.country] || weatherData.country;
         showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}, ${fullCountryName}`, variant: 'success' }); // Added success variant
@@ -540,11 +543,13 @@ async function searchCity(city) {
         weatherContainer.style.display = 'block'; // Make weather container visible
         weatherContainer.classList.add('fade-in'); // Apply fade-in animation
 
+        // --- REVERTED SCROLL BEHAVIOR TO WEATHER CONTAINER ---
         // Smooth scroll to the weather container after data is loaded
         weatherContainer.scrollIntoView({
             behavior: 'smooth',
-            block: 'start'
+            block: 'start' // This will place the top of the container at the top of the viewport
         });
+        // --- END REVERTED SCROLL BEHAVIOR ---
 
         // Updated toast message to include full country name
         const fullCountryName = countryNames[weatherData.country] || weatherData.country;
@@ -590,9 +595,3 @@ window.addEventListener('load', () => {
     document.body.style.backgroundColor = '#1e4b47'; 
     handleLocationClick();
 });
-
-// Initial classes for fade-in elements (CSS manages initial opacity: 0)
-// These classes are added by JS when the element is ready to be shown
-// weatherCard.classList.add('fade-in'); // No need to add here, done in loadWeatherData/searchCity
-// forecastCard.classList.add('fade-in'); // No need to add here, done in loadWeatherData/searchCity
-// weatherDetails.classList.add('fade-in'); // No need to add here, done in loadWeatherData/searchCity
