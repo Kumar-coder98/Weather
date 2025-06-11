@@ -85,7 +85,7 @@ body::before {
     justify-content: center;
     align-items: center;
     gap: 1.2rem;
-    max-width: 750px;
+    max-width: 650px;
     margin: 0 auto;
     border: 1px solid rgba(255, 255, 255, 0.7);
     animation: fadeIn 1s ease-out forwards;
@@ -970,5 +970,18 @@ footer {
         font-size: 1.2rem;
         top: 0.4rem;
         right: 0.5rem;
+    }
+}
+/* Styles for date and time text in weather card */
+.weather-datetime-text {
+    font-size: 1rem; /* Smaller font size for date and time */
+    color: #64748b; /* Keep consistent color */
+    margin-bottom: 0.2rem; /* Reduce space between date and time */
+}
+
+/* Adjustments for even smaller screens if needed */
+@media (max-width: 480px) {
+    .weather-datetime-text {
+        font-size: 0.85rem; /* Even smaller for very small mobile screens */
     }
 }
