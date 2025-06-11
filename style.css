@@ -3,7 +3,12 @@ body {
     margin: 0;
     font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    background-image: url('your-image.jpg'); /* This will be dynamically replaced by JS based on weather */
+    /* --- CRITICAL FIX: Explicitly set background-color for consistent base --- */
+    background-color: #21726a; /* This is the solid dark teal color from your image */
+    
+    /* background-image will be dynamically set by JS */
+    /* background-image: url('your-image.jpg'); */ /* Remove or keep as a placeholder, JS will override */
+
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -12,14 +17,16 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Align content to the top */
+    /* --- MODIFIED: Align content to the center vertically --- */
+    align-items: center; /* Changed from flex-start to center */ 
     padding: 25px; /* Increased overall padding for desktop/large tablet */
-    transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out;
+    /* Transition only background-image; background-color stays constant */
+    transition: background-image 0.8s ease-in-out; 
     overflow-x: hidden;
     position: relative; /* Needed for pseudo-element overlay */
 }
 
-/* --- CRITICAL CHANGE: Darker Background Overlay for better visibility --- */
+/* Darker Background Overlay for better visibility */
 body::before {
     content: '';
     position: absolute;
@@ -45,7 +52,7 @@ body::before {
 /* Header Styles */
 .weather-header {
     max-width: 800px;
-    margin: 1.5rem auto 0; /* Adjust margin-top to allow space for content above */
+    margin: 0.5rem auto 0; /* Adjust margin-top to allow space for content above */
     padding: 1.8rem 2.5rem;
     border-radius: 1.8rem;
     background: rgba(255, 255, 255, 0.85); /* Much more opaque, almost solid white */
@@ -159,7 +166,7 @@ body::before {
     transition: all 0.3s ease;
 }
 
-/* --- FIX: Removed green filter for location icon --- */
+/* FIX: Removed green filter for location icon */
 .search-bar .location-btn img {
     height: 28px;
     width: 28px;
@@ -206,9 +213,10 @@ body::before {
 /* Weather Grid and Cards */
 #weather-container {
     display: none;
-    animation: fadeIn 1s ease-out forwards;
-    animation-delay: 0.4s;
-    opacity: 0;
+    /* --- REMOVED ANIMATION FROM HERE --- */
+    /* animation: fadeIn 1s ease-out forwards; */
+    /* animation-delay: 0.4s; */
+    opacity: 0; /* Keep initial opacity hidden */
 }
 
 .weather-grid {
@@ -254,7 +262,7 @@ body::before {
 .weather-card h2 {
     font-size: 3rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.1rem;
     color: #0f172a;
     position: relative;
     z-index: 2;
@@ -269,17 +277,17 @@ body::before {
 
 .weather-card p.desc {
     text-transform: capitalize;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     font-size: 1.35rem;
     color: #475569;
     font-weight: 500;
 }
 
 .weather-temp {
-    font-size: 6rem;
+    font-size: 4.8rem;
     font-weight: 900;
-    margin-top: 1.2rem;
-    margin-bottom: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
     color: #38bdf8;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -305,7 +313,7 @@ body::before {
     min-width: 100px;
     height: auto;
     object-fit: contain;
-    margin: 20px auto;
+    margin: 5px auto;
     display: block;
     filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
     position: relative;
@@ -338,13 +346,17 @@ body::before {
     color: #0f172a;
     border-radius: 1.2rem;
     padding: 1.2rem 1.5rem;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.8rem;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.6);
     transition: background-color 0.2s ease, transform 0.2s ease;
+
+    /* --- NEW LAYOUT FOR forecast-day: Column flex, centered content --- */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    text-align: center; /* Center text within description */
+    gap: 0.8rem; /* Gap between main sections (date/temps and icon/desc) */
+    width: 85%; /* Ensure it takes full width of its parent */
 }
 
 .forecast-day:hover {
@@ -352,23 +364,110 @@ body::before {
     transform: translateX(5px);
 }
 
+.forecast-date-temps {
+    display: flex;
+    justify-content: space-between; /* Push date to left, temps to right */
+    align-items: center;
+    width: 100%; /* Take full width of parent .forecast-day */
+    margin-bottom: 0.5rem; /* Space between date/temps and icon/desc */
+}
+
 .forecast-date {
-    flex: 1;
     font-weight: 600;
     font-size: 1.15rem;
     color: #1e293b;
+    /* Removed flex: 1 as it's now handled by justify-content: space-between */
 }
 
-.forecast-day img {
-    height: 40px;
-    width: 40px;
-    object-fit: contain;
+.forecast-max-min-temps {
+    display: flex;
+    flex-direction: column; /* Stack max and min temps */
+    align-items: flex-end; /* Align temps to the right */
+    gap: 0.2rem; /* Small gap between max and min */
 }
 
 .forecast-temp {
     font-weight: 700;
     font-size: 1.1rem;
     color: #38bdf8;
+    /* Removed flex-basis: auto as it's now a column item */
+}
+
+.forecast-icon-description-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center icon and description */
+    margin-top: 0.3rem; /* Space between temps and icon/desc group */
+}
+
+.forecast-icon-small { /* New class for the smaller icon in forecast */
+    height: 60px; /* Increased size for prominence */
+    width: 60px;
+    object-fit: contain;
+    margin-bottom: 0.3rem; /* Space between icon and description */
+}
+
+.forecast-description { /* New class for the description */
+    text-transform: capitalize;
+    color: #475569;
+    font-size: 1.05rem; /* Adjusted font size */
+    font-weight: 500;
+}
+
+
+/* Media queries for smaller screens need adjustment too */
+@media (max-width: 768px) {
+    .forecast-day {
+        /* Keep column flex and center alignment */
+        gap: 0.6rem; /* Tighter gap */
+        padding: 1rem 1.2rem; /* Reduced padding */
+        border-radius: 1rem;
+    }
+    .forecast-date-temps {
+        margin-bottom: 0.4rem;
+    }
+    .forecast-date {
+        font-size: 0.95rem; /* Smaller date font */
+    }
+    .forecast-max-min-temps {
+        gap: 0.1rem; /* Even smaller gap */
+    }
+    .forecast-temp {
+        font-size: 0.9rem; /* Smaller temp font */
+    }
+    .forecast-icon-small {
+        height: 50px; /* Smaller icon for mobile */
+        width: 50px;
+        margin-bottom: 0.4rem;
+    }
+    .forecast-description {
+        font-size: 0.9rem; /* Smaller description font */
+    }
+}
+
+@media (max-width: 480px) {
+    .forecast-day {
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+        border-radius: 0.8rem;
+    }
+    .forecast-date-temps {
+        margin-bottom: 0.3rem;
+    }
+    .forecast-date {
+        font-size: 0.85rem;
+    }
+    .forecast-temp {
+        font-size: 0.8rem;
+    }
+    .forecast-icon-small {
+        height: 40px;
+        width: 40px;
+        margin-bottom: 0.3rem;
+    }
+    .forecast-description {
+        font-size: 0.8rem;
+    }
 }
 
 /* Location Time Card (FIXED: Hidden by default when empty) */
@@ -462,7 +561,7 @@ body::before {
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
 }
 
-/* --- FIX: Removed green filter for detail icons --- */
+/* FIX: Removed green filter for detail icons */
 .detail-icon {
     width: 36px;
     height: 36px;
@@ -541,7 +640,7 @@ footer p {
 /* Initial hidden state for animated elements (except for #location-time, which is display:none) */
 .weather-header,
 .search-bar,
-#weather-container,
+/* #weather-container, <-- REMOVED FROM HERE */
 footer {
     opacity: 0;
 }
@@ -636,69 +735,33 @@ footer {
         gap: 0.8rem; /* Reduced gap */
     }
     .forecast-day {
-        flex-direction: row; /* Keep as row if possible, but rely on flex-wrap */
-        flex-wrap: wrap; /* Allow wrapping */
-        justify-content: space-between; /* Space out items */
-        align-items: center; /* Center items vertically */
-        gap: 0.4rem; /* Tighter gap */
-        padding: 0.7rem 0.8rem; /* Reduced padding */
-        border-radius: 0.6rem; /* Smaller radius */
-    }
-    .forecast-date {
-        font-size: 0.85rem; /* Significantly smaller */
-        flex-basis: auto; /* Let content dictate size */
-        text-align: left; /* Ensure alignment */
-    }
-    .forecast-day img {
-        height: 28px; /* Smaller icon */
-        width: 28px;
-    }
-    .forecast-temp {
-        font-size: 0.85rem; /* Significantly smaller */
-        flex-basis: auto; /* Let temp determine its size */
-        text-align: right; /* Ensure alignment */
-    }
-    #location-time {
+        /* Keep column flex and center alignment */
+        gap: 0.6rem; /* Tighter gap */
         padding: 1rem 1.2rem; /* Reduced padding */
-        font-size: 0.95rem; /* Smaller */
         border-radius: 1rem;
     }
-    .weather-details {
-        padding: 1.2rem; /* Reduced padding */
-        border-radius: 1.2rem;
-        margin-top: 1.5rem; /* Reduced margin */
+    .forecast-date-temps {
+        margin-bottom: 0.4rem;
     }
-    .details-grid {
-        gap: 0.8rem; /* Reduced gap */
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Even smaller min width for more columns */
+    .forecast-date {
+        font-size: 0.95rem; /* Smaller date font */
     }
-    .detail-item {
-        padding: 0.8rem; /* Reduced padding */
-        border-radius: 0.6rem;
+    .forecast-max-min-temps {
+        gap: 0.1rem; /* Even smaller gap */
     }
-    .detail-item svg {
-        width: 22px; /* Smaller icon */
-        height: 22px;
+    .forecast-temp {
+        font-size: 0.9rem; /* Smaller temp font */
     }
-    .detail-icon { /* Also target generic detail-icon if it's an image */
-        width: 24px; /* Smaller */
-        height: 24px;
+    .forecast-icon-small {
+        height: 50px; /* Smaller icon for mobile */
+        width: 50px;
+        margin-bottom: 0.4rem;
     }
-    .detail-label {
-        font-size: 0.75rem; /* Smaller */
-        margin-bottom: 0.4rem; /* Reduced margin */
-    }
-    .detail-value {
-        font-weight: 600; /* Slightly less bold */
-        font-size: 0.9rem; /* Smaller */
-    }
-    footer {
-        margin-top: 2rem; /* Reduced margin */
-        font-size: 0.75rem; /* Smaller */
+    .forecast-description {
+        font-size: 0.9rem; /* Smaller description font */
     }
 }
 
-/* Very Small Mobile Screens (up to 480px) */
 @media (max-width: 480px) {
     body {
         padding: 5px; /* Minimal padding for tiny screens */
@@ -818,5 +881,155 @@ footer {
     footer {
         margin-top: 1.5rem; /* Minimal margin */
         font-size: 0.7rem; /* Even smaller */
+    }
+}
+/* Toast Notification Styles */
+#toast-container {
+    position: fixed;
+    top: 1.5rem; /* Adjusted for better spacing */
+    right: 1.5rem; /* Adjusted for better spacing */
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem; /* Space between multiple toasts */
+    align-items: flex-end; /* Align toasts to the right */
+    max-width: 350px; /* Limit width */
+    pointer-events: none; /* Allow clicks to pass through container */
+}
+
+.toast-notification {
+    background-color: rgba(255, 255, 255, 0.95); /* Light, semi-transparent background */
+    color: #1e293b; /* Dark text */
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden; /* For border-radius on child elements */
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInRight 0.5s ease-out forwards;
+    pointer-events: auto; /* Re-enable pointer events for the toast itself */
+    min-width: 250px; /* Ensure a decent minimum width */
+    max-width: 100%; /* Ensure responsiveness */
+    box-sizing: border-box; /* Include padding in width calculation */
+    border: 1px solid rgba(255, 255, 255, 0.7); /* Subtle border */
+}
+
+.toast-notification.hide {
+    animation: slideOutRight 0.5s ease-in forwards;
+}
+
+.toast-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: #0f172a; /* Darker title */
+}
+
+.toast-description {
+    font-size: 0.9rem;
+    color: #475569; /* Muted description text */
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+.toast-close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.7rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem;
+    transition: color 0.2s ease;
+}
+
+.toast-close-btn:hover {
+    color: #0f172a; /* Darker on hover */
+}
+
+/* Variant-specific styles for toasts */
+.toast-destructive {
+    background-color: rgba(255, 99, 71, 0.95); /* Tomato red */
+    color: white;
+    border-color: rgba(255, 99, 71, 1);
+}
+.toast-destructive .toast-title,
+.toast-destructive .toast-description,
+.toast-destructive .toast-close-btn {
+    color: white; /* White text for destructive toasts */
+}
+.toast-destructive .toast-close-btn:hover {
+    color: #e0e0e0; /* Slightly off-white on hover */
+}
+
+.toast-success {
+    background-color: rgba(76, 175, 80, 0.95); /* Material Green */
+    color: white;
+    border-color: rgba(76, 175, 80, 1);
+}
+.toast-success .toast-title,
+.toast-success .toast-description,
+.toast-success .toast-close-btn {
+    color: white; /* White text for success toasts */
+}
+.toast-success .toast-close-btn:hover {
+    color: #e0e0e0; /* Slightly off-white on hover */
+}
+
+/* Animations for toast */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Responsive adjustments for toasts */
+@media (max-width: 480px) {
+    #toast-container {
+        top: 1rem;
+        right: 1rem;
+        gap: 0.5rem;
+        max-width: calc(100% - 2rem); /* Full width minus padding */
+    }
+
+    .toast-notification {
+        padding: 0.75rem 1rem;
+        border-radius: 0.6rem;
+    }
+
+    .toast-title {
+        font-size: 1rem;
+    }
+
+    .toast-description {
+        font-size: 0.85rem;
+    }
+
+    .toast-close-btn {
+        font-size: 1.2rem;
+        top: 0.4rem;
+        right: 0.5rem;
     }
 }
