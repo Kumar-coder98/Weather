@@ -85,7 +85,7 @@ body::before {
     justify-content: center;
     align-items: center;
     gap: 1.2rem;
-    max-width: 350px;
+    max-width: 450px;
     margin: 0 auto;
     border: 1px solid rgba(255, 255, 255, 0.7);
     animation: fadeIn 1s ease-out forwards;
@@ -135,7 +135,7 @@ body::before {
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s ease;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     flex-shrink: 0; /* Prevent button from shrinking */
 }
