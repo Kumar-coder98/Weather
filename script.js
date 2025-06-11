@@ -137,7 +137,6 @@ const weatherCard = document.getElementById('weather-card'); // Element for curr
 const forecastCard = document.getElementById('forecast-card'); // Element for 5-day forecast display
 const weatherDetails = document.getElementById('weather-details'); // Element for detailed weather info
 const toastContainer = document.getElementById('toast-container'); // Container for toast messages
-// Removed weatherHeader variable as it's no longer needed for scrolling
 
 // State
 let currentCoordinates = null;
@@ -204,7 +203,7 @@ const countryNames = {
     "NE": "Niger", "NF": "Norfolk Island", "NG": "Nigeria", "NI": "Nicaragua", "NL": "Netherlands",
     "NO": "Norway", "NP": "Nepal", "NR": "Nauru", "NU": "Niue", "NZ": "New Zealand",
     "OM": "Oman", "PA": "Panama", "PE": "Peru", "PF": "French Polynesia", "PG": "Papua New Guinea",
-    "PH": "Philippines", "PK": "Pakistan", "PL": "Poland", "PM": "Saint Pierre and Miquelon", "PN": "Pitcairn",
+    "PH": "Philippines", "PK": "Pakistan", "PL": "Poland", "PM": "Saint Pierre and Micquelon", "PN": "Pitcairn",
     "PR": "Puerto Rico", "PS": "Palestine, State of", "PT": "Portugal", "PW": "Palau", "PY": "Paraguay",
     "QA": "Qatar", "RE": "Réunion", "RO": "Romania", "RS": "Serbia", "RU": "Russian Federation",
     "RW": "Rwanda", "SA": "Saudi Arabia", "SB": "Solomon Islands", "SC": "Seychelles", "SD": "Sudan",
@@ -479,13 +478,15 @@ async function loadWeatherData(lat, lon) {
         weatherContainer.style.display = 'block'; // Make weather container visible
         weatherContainer.classList.add('fade-in'); // Apply fade-in animation
 
-        // --- REVERTED SCROLL BEHAVIOR TO WEATHER CONTAINER ---
-        // Smooth scroll to the weather container after data is loaded
-        weatherContainer.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start' // This will place the top of the container at the top of the viewport
-        });
-        // --- END REVERTED SCROLL BEHAVIOR ---
+        // --- MODIFIED SCROLL BEHAVIOR TO TARGET WEATHER CARD ---
+        // Smooth scroll to the weather card (which contains the temperature)
+        if (weatherCard) {
+            weatherCard.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start' // This will place the top of the weather card at the top of the viewport
+            });
+        }
+        // --- END MODIFIED SCROLL BEHAVIOR ---
 
         const fullCountryName = countryNames[weatherData.country] || weatherData.country;
         showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}, ${fullCountryName}`, variant: 'success' }); // Added success variant
@@ -543,13 +544,15 @@ async function searchCity(city) {
         weatherContainer.style.display = 'block'; // Make weather container visible
         weatherContainer.classList.add('fade-in'); // Apply fade-in animation
 
-        // --- REVERTED SCROLL BEHAVIOR TO WEATHER CONTAINER ---
-        // Smooth scroll to the weather container after data is loaded
-        weatherContainer.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start' // This will place the top of the container at the top of the viewport
-        });
-        // --- END REVERTED SCROLL BEHAVIOR ---
+        // --- MODIFIED SCROLL BEHAVIOR TO TARGET WEATHER CARD ---
+        // Smooth scroll to the weather card (which contains the temperature)
+        if (weatherCard) {
+            weatherCard.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start' // This will place the top of the weather card at the top of the viewport
+            });
+        }
+        // --- END MODIFIED SCROLL BEHAVIOR ---
 
         // Updated toast message to include full country name
         const fullCountryName = countryNames[weatherData.country] || weatherData.country;
