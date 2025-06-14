@@ -2594,7 +2594,7 @@ The existing media queries below correctly transition these columns to `width: 1
         font-size: 0.85rem;
         /* Further reduced horizontal padding for the input field */
         padding: 0.6rem 0.6rem; /* Adjusted from 0.6rem 0.8rem */
-        width: 200px;
+        width: 100px;
     }
     .search-bar button[type="submit"] {
         font-size: 0.85rem;
