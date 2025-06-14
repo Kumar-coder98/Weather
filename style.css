@@ -2381,7 +2381,7 @@ The existing media queries below correctly transition these columns to `width: 1
         flex-wrap: nowrap; /* Keep elements on one line if possible */
         justify-content: center; /* Distribute space */
         align-items: center;
-        gap: 0.8rem; /* Slightly reduced gap */
+        gap: 1.2rem; /* Slightly reduced gap */
         padding: 1.2rem 1.5rem; /* Adjusted padding */
         border-radius: 1.2rem;
         max-width: 100px; /* Allow it to be slightly smaller than full width */
@@ -2398,7 +2398,7 @@ The existing media queries below correctly transition these columns to `width: 1
 
     .search-bar input[type="text"] {
         font-size: 1rem;
-        padding: 0.8rem 1rem;
+        padding: 0.8rem 0.6rem;
         border-radius: 1rem;
         max-width: 100px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
@@ -2414,6 +2414,7 @@ The existing media queries below correctly transition these columns to `width: 1
     }
 
     .search-bar .location-btn {
+        margin-left: 0.5rem;
         width: 3.2rem;
         height: 3.2rem;
         flex-shrink: 0;
