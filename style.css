@@ -1080,6 +1080,1102 @@ footer {
     transition: all 0.3s ease; /* Smooth transition for focus effects */
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
 }
+/*
+ * General Global Styles & Body Setup
+ * Sets base font, background, and centers the main app container.
+ */
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    background: linear-gradient(145deg, #1A1A2E, #16213E, #0F3460); /* Deep sci-fi gradient */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps background fixed during scroll */
+    background-position: center;
+    color: #E0E0E0; /* Light gray for general text */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px; /* Overall padding for desktop/large tablet */
+    transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out; /* Smooth background change */
+    overflow-x: hidden; /* Prevent horizontal scroll on body */
+    position: relative;
+    /* Custom scrollbar styles for dark theme */
+    scrollbar-width: thin;
+    scrollbar-color: #1a202c; /* thumb and track color */
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #1a202c; /* track color - dark background for scrollbar */
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #4A5568; /* thumb color */
+    border-radius: 10px;
+    border: 2px solid #1a202c; /* padding around thumb */
+}
+
+/* Background Overlay for better content readability (glassmorphism base) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Darker translucent overlay for sci-fi feel */
+    z-index: -1;
+    transition: background 0.8s ease-in-out;
+}
+
+/*
+ * Main Application Container
+ * Defines the max width and vertical stacking for the app content.
+ */
+#app {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Space between major sections */
+    position: relative;
+    z-index: 1; /* Ensures app content is above the body overlay */
+}
+
+/*
+ * Header Styles
+ * Transparent, blurred card style for the main title.
+ */
+.weather-header {
+    max-width: 800px;
+    margin: 0.5rem auto 0; /* Centers header horizontally */
+    padding: 1.8rem 2.5rem;
+    border-radius: 1.8rem;
+    background: rgba(23, 37, 50, 0.85); /* Deeper dark blue/grey translucent */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+    backdrop-filter: blur(25px); /* Moderate glassmorphism effect */
+    -webkit-backdrop-filter: blur(25px); /* Webkit specific */
+    text-align: center;
+    border: 1px solid rgba(71, 85, 105, 0.7); /* Subtle metallic border */
+    animation: fadeInDown 0.8s ease-out forwards;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.weather-header h1 {
+    font-weight: 700;
+    font-size: 3rem;
+    color: #8B5CF6; /* Vibrant purple for main title */
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.6), 0 0 20px rgba(139, 92, 246, 0.3); /* Neon glow effect */
+}
+
+.weather-header p {
+    font-size: 1.45rem;
+    color: #94A3B8; /* Slate-400 */
+    opacity: 0.9;
+}
+
+/*
+ * Search Bar Styles
+ * Flexible layout for input, search button, and location button.
+ */
+.search-bar {
+    border-radius: 1.8rem;
+    padding: 1.8rem 2.5rem;
+    background: rgba(30, 41, 59, 0.9); /* Slate-800 with high opacity */
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: row; /* Input and buttons side-by-side */
+    justify-content: center;
+    align-items: center;
+    gap: 1.2rem;
+    max-width: 450px;
+    margin: 0 auto; /* Centers search bar horizontally */
+    border: 1px solid rgba(71, 85, 105, 0.8); /* Metallic border */
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.2s;
+    opacity: 0;
+    transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    flex-wrap: nowrap; /* Keep elements on one line by default (desktop) */
+}
+
+.search-bar form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    flex-grow: 1; /* Allows form to take available space */
+    flex-shrink: 1;
+}
+
+.search-bar input[type="text"] {
+    padding: 1rem 1.5rem;
+    font-size: 1.15rem;
+    border: 1px solid rgba(71, 85, 105, 0.6); /* Gray-600 */
+    border-radius: 1.2rem;
+    outline: none;
+    background-color: rgba(15, 23, 42, 0.8); /* Deep dark blue */
+    color: #F8FAFC; /* White text */
+    transition: all 0.3s ease;
+    flex-grow: 1; /* Input takes up available space */
+    min-width: 120px; /* Minimum width for input */
+}
+
+.search-bar input[type="text"]::placeholder {
+    color: #94A3B8; /* Slate-400 */
+    opacity: 0.8;
+}
+
+.search-bar input[type="text"]:focus {
+    border-color: #6366F1; /* Indigo-500 */
+    box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.4); /* Glow effect */
+    background-color: rgba(23, 37, 50, 0.9); /* Slightly brighter background on focus */
+}
+
+.search-bar button {
+    font-size: 1.15rem;
+    border: none;
+    border-radius: 1.2rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    padding: 1rem 1rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0; /* Prevents button from shrinking */
+    position: relative; /* For glow effect */
+    overflow: hidden; /* For glow effect */
+}
+
+.search-bar button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(99, 102, 241, 0.3), rgba(139, 92, 246, 0.3)); /* Subtle gradient overlay */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
+}
+
+.search-bar button:hover::before {
+    opacity: 1; /* Show gradient on hover */
+}
+
+.search-bar button[type="submit"] {
+    background-color: #6366F1; /* Indigo-500 */
+    color: white;
+}
+
+.search-bar button[type="submit"]:hover {
+    background-color: #4F46E5; /* Indigo-600 */
+    transform: translateY(-4px) scale(1.03); /* Lift and slight enlarge */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.search-bar .location-btn {
+    background-color: #334155; /* Slate-700 */
+    color: #CBD5E1; /* Slate-300 */
+    width: 3.8rem;
+    height: 3.8rem;
+    border-radius: 50%; /* Circular button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0; /* Important: Prevents location button from shrinking */
+    transition: all 0.3s ease;
+}
+
+.search-bar .location-btn img {
+    height: 28px;
+    width: 28px;
+    filter: invert(1); /* Invert icon color for dark background */
+}
+
+.search-bar .location-btn:hover {
+    background-color: #475569; /* Slate-600 */
+    transform: scale(1.18); /* Slightly enlarge on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/*
+ * Loading Spinner Styles
+ */
+#loading {
+    display: none; /* Hidden by default */
+    text-align: center;
+    margin-top: 3rem;
+    animation: fadeIn 0.5s ease-out forwards;
+    background: rgba(23, 37, 50, 0.9); /* Dark theme loading background */
+    padding: 2rem;
+    border-radius: 1.8rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(71, 85, 105, 0.7);
+    display: flex; /* Ensure flex for centering */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    border: 6px solid rgba(255, 255, 255, 0.2); /* Lighter border for contrast */
+    border-top-color: #6366F1; /* Indigo-500 for spinner */
+    border-radius: 50%;
+    width: 4.5rem;
+    height: 4.5rem;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1.8rem auto;
+}
+
+.loading-text {
+    text-align: center;
+    font-size: 1.45rem;
+    color: #F0F9FF; /* Near white */
+    text-shadow: 0 0 8px rgba(99, 102, 241, 0.4); /* Subtle glow */
+    animation: pulse 1.5s infinite alternate; /* Pulsing effect */
+}
+
+@keyframes pulse {
+    from {
+        opacity: 0.7;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/*
+ * Main Layout Containers (New in HTML)
+ * Manages the two-column structure for current weather/hourly and 5-day forecast.
+ */
+.main-weather-layout {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* Makes columns stretch to same height */
+    gap: 20px; /* Space between columns */
+    max-width: 1200px;
+    margin: 20px auto; /* Centers the layout block */
+    flex-wrap: wrap; /* Allows columns to stack on smaller screens */
+}
+
+/* Updated: Left and Right Column Flex Ratios */
+.left-column,
+.right-column {
+    flex: 2; /* Takes 2 parts of available space when side-by-side */
+    /* REMOVED: min-width: 850px; as this would cause horizontal overflow
+       when both columns are side-by-side within max-width: 1200px.
+       Flex properties handle width distribution better here. */
+    display: flex;
+    flex-direction: column; /* Stack items vertically within each column */
+    background-color: rgba(23, 37, 50, 0.9); /* Deeper dark background for columns */
+    color: #E0E0E0;
+    padding: 20px;
+    border-radius: 1.8rem; /* Consistent large radius */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    box-sizing: border-box; /* Include padding in width/height */
+    gap: 20px; /* Space between items inside the column (e.g., current and hourly) */
+    border: 1px solid rgba(71, 85, 105, 0.7);
+}
+
+/* Specific adjustments for internal containers to fill space */
+#weather-container {
+    display: flex; /* Ensures Flexbox for internal layout */
+    flex-direction: column;
+    gap: 15px;
+    opacity: 0; /* Initial state for fade-in animation */
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Updated: Hourly Weather Container for today's summary - now a grid! */
+#hourly-weather-container {
+    flex-grow: 1; /* Allows it to take available vertical space */
+    padding: 15px;
+    background-color: rgba(30, 41, 59, 0.9); /* Dark background for contrast */
+    border-radius: 1.5rem; /* Consistent radius */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(71, 85, 105, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition */
+}
+
+#hourly-weather-container:hover {
+    animation: float 1.5s ease-in-out infinite; /* Apply float animation on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(99, 102, 241, 0.4); /* Add glow */
+    border-color: #6366F1; /* Glow border */
+}
+
+/* NEW/UPDATED: Hourly Weather Grid (within the left column, for today's hourly summary) */
+.hourly-weather-summary {
+    display: grid; /* Changed from flex to grid */
+    /* Use auto-fit to create as many 70px minimum columns as possible, distributing remaining space */
+    grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); /* Optimized for 4 items per row */
+    gap: 1rem;
+    justify-content: center; /* Centers the grid if items don't fill all columns */
+    align-items: stretch; /* Ensures all items in a row have the same height */
+    padding: 1rem 0;
+}
+
+#forecast-card {
+    flex-grow: 1; /* Allows it to take available vertical space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Distributes space between forecast days */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition */
+}
+
+#forecast-card:hover {
+    animation: float 1.5s ease-in-out infinite; /* Apply float animation on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(139, 92, 246, 0.4); /* Add glow */
+    border-color: #8B5CF6; /* Glow border */
+}
+
+/*
+ * Card Base Styles (Applied to weather, forecast, details)
+ * Defines the common "glassmorphism" look for content blocks.
+ */
+.card {
+    background: rgba(30, 41, 59, 0.9); /* Dark slate with high opacity */
+    color: #E0E0E0;
+    border-radius: 1.8rem;
+    padding: 2.2rem;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45); /* Stronger, deeper shadow */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(71, 85, 105, 0.8); /* Prominent metallic border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative; /* For subtle hover border */
+    overflow: hidden; /* To contain any pseudo-elements for hover effects */
+}
+
+.card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55), 0 0 25px rgba(139, 92, 246, 0.4); /* Added purple glow */
+    border-color: rgba(139, 92, 246, 0.8); /* Border color changes to purple on hover */
+}
+
+/*
+ * Current Weather Card Specifics
+ */
+.weather-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 0.5rem;
+}
+
+.weather-card:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    background: rgba(30, 41, 59, 0.95); /* Slightly lighter on hover */
+    box-sizing: border-box; /* Ensures padding is included in width/height */
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; /* Added transition */
+    animation: float 1.5s ease-in-out infinite; /* Apply float animation on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(139, 92, 246, 0.4); /* Add glow */
+    border-color: #8B5CF6; /* Glow border */
+}
+
+.weather-card h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 0.1rem 0;
+    color: #8B5CF6; /* Vibrant purple */
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 8px rgba(139, 92, 246, 0.5); /* Soft glow */
+}
+
+.weather-card p {
+    color: #CBD5E1; /* Slate-300 */
+    position: relative;
+    z-index: 2;
+}
+
+.weather-temp {
+    font-size: 2rem; /* or your existing size */
+    font-weight: bold;
+}
+
+.feels-like {
+    font-size: 0.9rem;
+    color: #94A3B8;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.weather-card p.desc {
+    text-transform: capitalize;
+    margin-bottom: 0.5rem;
+    font-size: 1.35rem;
+    color: #94A3B8; /* Slate-400 */
+    font-weight: 500;
+}
+
+.weather-temp {
+    font-size: 4.8rem;
+    font-weight: 900;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #38BDF8; /* Sky blue */
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.7); /* Stronger glow */
+    position: relative;
+    z-index: 2;
+}
+
+.weather-datetime-text {
+    font-size: 1rem;
+    color: #94A3B8; /* Slate-400 */
+    margin-bottom: 0.2rem;
+}
+
+.weather-card p:nth-of-type(3) {
+    /* "Feels like" paragraph */
+    font-size: 1.2rem;
+    color: #94A3B8; /* Slate-400 */
+}
+
+.weather-icon {
+    width: 22vw;
+    max-width: 180px;
+    min-width: 100px;
+    height: auto;
+    object-fit: contain;
+    margin: 5px auto;
+    display: block;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 15px rgba(56, 189, 248, 0.5)); /* Stronger shadow with glow */
+    position: relative;
+    z-index: 2;
+    animation: float 3.5s ease-in-out infinite;
+}
+
+/* In-Card Hourly Forecast Summary (horizontal scroll) */
+.weather-card .hourly-forecast {
+    display: flex;
+    overflow-x: auto; /* Enables horizontal scrolling */
+    padding: 1rem 0;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+.weather-card .hourly-forecast::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+}
+
+/* Updated: Individual Hourly Items (used in hourly-weather-summary and modal, and in-card summary) */
+/* Removed fixed width to allow grid to control sizing for better fit */
+.hourly-item {
+    background: rgba(30, 41, 59, 0.85); /* Dark slate translucent */
+    border-radius: 1rem;
+    padding: 0.8rem 0.5rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(71, 85, 105, 0.6); /* Subtle dark border */
+    display: flex; /* Keep internal flex for content alignment */
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.3rem;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    scroll-snap-align: start; /* For horizontal scroll snapping (still relevant for in-card hourly-forecast) */
+}
+
+.hourly-item:hover {
+    transform: translateY(-3px);
+    background-color: rgba(45, 62, 80, 0.95); /* Slightly lighter on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    border-color: #6366F1; /* Indigo glow on hover */
+}
+
+.hourly-item .hourly-time {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #F8FAFC; /* White */
+}
+
+.hourly-item .hourly-icon {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin: 0.2rem 0;
+    filter: drop-shadow(0 2px 5px rgba(56, 189, 248, 0.3)); /* Icon glow */
+}
+
+.hourly-item .hourly-temp {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #38BDF8; /* Sky blue */
+}
+
+.hourly-item .hourly-description {
+    font-size: 0.75rem;
+    color: #94A3B8; /* Slate-400 */
+    text-transform: capitalize;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+/*
+ * 5-Day Forecast Card Styles
+ */
+.forecast-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    padding: 1.8rem;
+}
+
+.forecast-day {
+    background: rgba(30, 41, 59, 0.85); /* Dark slate translucent */
+    color: #E0E0E0;
+    border-radius: 1.2rem;
+    padding: 1.2rem 1.5rem;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(71, 85, 105, 0.6);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.8rem;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.forecast-day:hover {
+    background: rgba(45, 62, 80, 0.95); /* Slightly lighter on hover */
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 10px rgba(139, 92, 246, 0.4); /* Glow on hover */
+    border-color: #8B5CF6; /* Purple border on hover */
+}
+
+.forecast-date-temps {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.forecast-date {
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: #F8FAFC; /* White */
+}
+
+.forecast-max-min-temps {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.2rem;
+}
+
+.forecast-temp {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #38BDF8; /* Sky blue */
+}
+
+.forecast-icon-description-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.forecast-icon-small {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+    margin-bottom: 0.3rem;
+    filter: drop-shadow(0 2px 5px rgba(56, 189, 248, 0.3)); /* Icon glow */
+}
+
+.forecast-description {
+    text-transform: capitalize;
+    color: #94A3B8; /* Slate-400 */
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+/*
+ * Detailed Weather Information Section
+ */
+.weather-details {
+    flex-grow: 1; /* Like #hourly-weather-container */
+    padding: 15px;
+    background-color: rgba(30, 41, 59, 0.9); /* Dark background for contrast */
+    border-radius: 1.5rem; /* Match radius */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Match base shadow */
+    border: 1px solid rgba(71, 85, 105, 0.6); /* Match border color */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.weather-details:hover {
+    animation: float 1.5s ease-in-out infinite; /* Floating on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(99, 102, 241, 0.4); /* Same glow as hourly */
+    border-color: #6366F1; /* Same glow border */
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns on large screens */
+    gap: 1.5rem;
+    justify-items: center;
+}
+
+.detail-item {
+    background: rgba(45, 62, 80, 0.85); /* Slightly lighter dark slate translucent */
+    border-radius: 1.2rem;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(94, 110, 126, 0.6); /* Slightly lighter border */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-item:hover {
+    background: rgba(60, 80, 100, 0.95); /* Even lighter on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), 0 0 10px rgba(56, 189, 248, 0.4); /* Blue glow */
+    border-color: #38BDF8; /* Blue border on hover */
+}
+
+.detail-item svg {
+    /* For icons that are currently SVG (if used) */
+    margin-bottom: 0.6rem;
+    width: 32px;
+    height: 32px;
+    color: #38BDF8; /* Sky blue */
+    filter: drop-shadow(0 2px 6px rgba(56, 189, 248, 0.3)); /* Icon glow */
+}
+
+.detail-icon {
+    /* For image icons */
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    filter: invert(1) drop-shadow(0 2px 6px rgba(56, 189, 248, 0.3)); /* Invert for dark theme and add glow */
+}
+
+.detail-label {
+    font-size: 1rem;
+    color: #94A3B8; /* Slate-400 */
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #F8FAFC; /* White */
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/*
+ * Footer Styles
+ */
+footer {
+    text-align: center;
+    margin-top: 4.5rem;
+    color: #94A3B8; /* Slate-400 */
+    font-size: 1rem;
+    opacity: 0.85;
+    position: relative;
+    z-index: 10;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
+    opacity: 0;
+}
+
+footer p {
+    margin: 0;
+    color: inherit;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+footer a {
+    color: #6366F1; /* Indigo-500 */
+    text-decoration: none;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+footer a:hover {
+    color: #8B5CF6; /* Purple-400 */
+    text-shadow: 0 0 5px rgba(139, 92, 246, 0.4);
+}
+
+/*
+ * Toast Notification Styles
+ * Custom pop-up messages for user feedback.
+ */
+#toast-container {
+    position: fixed;
+    top: 1.8rem;
+    right: 1.8rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end; /* Stacks toasts to the right */
+    max-width: 350px;
+    pointer-events: none; /* Allows clicks to pass through container itself */
+}
+
+.toast-notification {
+    background-color: rgba(30, 41, 59, 0.95); /* Slate-800 with high opacity */
+    color: #E2E8F0; /* Slate-200 */
+    padding: 1rem 1.25rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideInRight 0.5s ease-out forwards;
+    pointer-events: auto; /* Re-enable pointer events for individual toasts */
+    min-width: 250px;
+    max-width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(71, 85, 105, 0.6); /* Slate-600 border */
+}
+
+.toast-notification.hide {
+    animation: slideOutRight 0.5s ease-in forwards;
+}
+
+.toast-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: #F8FAFC; /* White */
+}
+
+.toast-description {
+    font-size: 0.9rem;
+    color: #CBD5E1; /* Slate-300 */
+    margin-bottom: 0;
+    line-height: 1.4;
+}
+
+.toast-close-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.7rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #94A3B8; /* Slate-400 */
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem;
+    transition: color 0.2s ease;
+}
+
+.toast-close-btn:hover {
+    color: #E2E8F0; /* Slate-200 */
+}
+
+/* Variant-specific styles for toasts (e.g., error, success) */
+.toast-destructive {
+    background-color: rgba(220, 38, 38, 0.95); /* Red-600 with high opacity */
+    border-color: rgba(220, 38, 38, 1);
+}
+
+.toast-destructive .toast-title,
+.toast-destructive .toast-description,
+.toast-destructive .toast-close-btn {
+    color: white;
+}
+
+.toast-destructive .toast-close-btn:hover {
+    color: #FECACA; /* Red-200 */
+}
+
+.toast-success {
+    background-color: rgba(34, 197, 94, 0.95); /* Green-600 with high opacity */
+    border-color: rgba(34, 197, 94, 1);
+}
+
+.toast-success .toast-title,
+.toast-success .toast-description,
+.toast-success .toast-close-btn {
+    color: white;
+}
+
+.toast-success .toast-close-btn:hover {
+    color: #BBF7D0; /* Green-200 */
+}
+
+/*
+ * Hourly Forecast Modal Styles
+ * Full-screen overlay for detailed hourly forecast.
+ */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Darker opaque overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+}
+
+.modal-content {
+    background: rgba(23, 37, 50, 0.95); /* Deeper dark blue/gray, more opaque */
+    color: #E2E8F0; /* Slate-200 */
+    border-radius: 1.8rem;
+    padding: 2.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(71, 85, 105, 0.8);
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh; /* Limit height to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal-overlay.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #94A3B8; /* Slate-400 */
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.2rem;
+    transition: color 0.2s ease, transform 0.2s ease; /* Added transform transition */
+}
+
+.modal-close-btn:hover {
+    color: #F8FAFC; /* White on hover */
+    transform: rotate(90deg); /* Sci-fi close button effect */
+}
+
+.modal-title {
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: #8B5CF6; /* Vibrant purple */
+    text-align: center;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 8px rgba(139, 92, 246, 0.4); /* Glow effect */
+}
+
+/* Hourly Forecast Grid (for modal) - ALREADY A GRID */
+.hourly-forecast-grid {
+    /* Specific class for the grid inside the modal */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adaptive columns */
+    gap: 1.2rem;
+    justify-content: center; /* Centers items in the grid */
+    padding: 1rem;
+}
+
+/* Hourly Forecast Item (for modal and in-card summary) */
+.hourly-item {
+    /* This class is used for both in-card summary and modal items */
+    background: rgba(30, 41, 59, 0.8); /* Dark slate translucent */
+    border-radius: 1rem;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(71, 85, 105, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hourly-item:hover {
+    transform: translateY(-3px);
+    background-color: rgba(45, 62, 80, 0.9); /* Slightly lighter on hover */
+    border-color: #6366F1; /* Indigo glow on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hourly-time {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #F8FAFC; /* White */
+}
+
+.hourly-temp {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #38BDF8; /* Sky blue */
+}
+
+.hourly-description {
+    font-size: 0.9rem;
+    color: #94A3B8; /* Slate-400 */
+    text-transform: capitalize;
+}
+
+.hourly-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(56, 189, 248, 0.3)); /* Icon glow */
+}
+
+/*
+ * Animations (Keyframes)
+ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* Initial hidden state for elements animated by JS */
+.weather-header,
+.search-bar,
+footer {
+    opacity: 0;
+}
+
+/* Fade-in class for JS to apply dynamically */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* --- Hourly Weather Section Styling (from your previous continuation) --- */
+
+/* Wrapper for the entire search block (input + button) */
+.time-search-block-wrapper {
+    display: flex;
+    gap: 1rem; /* Space between input container and button */
+    margin-top: 2rem; /* Space above the search bar */
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    align-items: center; /* Vertically align items */
+    justify-content: center; /* Center the block contents */
+    padding: 1.2rem; /* Comfortable padding inside the wrapper */
+    background-color: rgba(30, 41, 59, 0.5); /* Slightly more opaque for better blur */
+    border-radius: 1.5rem; /* Rounded corners for the entire block */
+    backdrop-filter: blur(10px); /* Stronger frosted glass effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* More prominent shadow */
+    border: 1px solid rgba(71, 85, 105, 0.6); /* Subtle border for definition */
+    position: relative; /* For z-index or other absolute positioning needs */
+    overflow: hidden; /* Ensures shadows and blur are contained */
+}
+
+/* Container for the clock icon and the time input field */
+.time-input-container {
+    flex-grow: 1; /* Allows the container to take available space */
+    display: flex; /* Use flex to align icon and input */
+    align-items: center;
+    background-color: rgba(15, 23, 42, 0.8); /* Background for the input area */
+    border-radius: 1rem; /* Rounded corners for the input field */
+    padding: 0.7rem 1.2rem; /* Padding inside the input container */
+    border: 1px solid rgba(71, 85, 105, 0.5); /* Default border */
+    transition: all 0.3s ease; /* Smooth transition for focus effects */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Inner shadow for depth */
+}
 
 /* Focus state for the entire input container */
 .time-input-container:focus-within {
@@ -1096,6 +2192,7 @@ footer {
     opacity: 0.7; /* Slightly faded by default */
     transition: opacity 0.3s ease, color 0.3s ease; /* Smooth transition for icon */
 }
+
 .time-input-container:focus-within .icon-clock {
     opacity: 1; /* Full opacity on focus */
     color: #6366F1; /* Highlight icon on focus */
@@ -1121,11 +2218,11 @@ footer {
     cursor: pointer; /* Indicate clickable */
     transition: opacity 0.2s ease, filter 0.2s ease;
 }
+
 .time-input::-webkit-calendar-picker-indicator:hover {
     opacity: 1; /* Full opacity on hover */
     filter: invert(1) drop-shadow(0 0 10px rgba(99, 102, 241, 0.7)); /* Stronger glow on hover */
 }
-
 
 /* Styling for the search button */
 .search-time-btn {
@@ -1153,7 +2250,7 @@ footer {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduced shadow on active */
 }
 
-/* --- Time Search Results Block Styling (already provided by you, just for completeness) --- */
+/* --- Time Search Results Block Styling --- */
 #time-search-results {
     margin-top: 1.5rem;
     padding: 1rem;
@@ -1176,16 +2273,19 @@ footer {
     width: 60px;
     filter: invert(1) drop-shadow(0 0 8px rgba(56, 189, 248, 0.5)); /* Invert and add glow */
 }
+
 #time-search-results .forecast-temp {
     font-size: 1.2rem;
     font-weight: bold;
     color: #38BDF8; /* Sky blue */
 }
+
 #time-search-results .forecast-description {
     font-size: 1rem;
     text-transform: capitalize;
     color: #94A3B8; /* Slate-400 */
 }
+
 #time-search-results .detail-label {
     font-size: 0.9rem;
     color: #94A3B8; /* Slate-400 */
@@ -1206,15 +2306,23 @@ footer {
     margin-bottom: 1rem;
     font-style: italic;
 }
-#time-search-results .forecast-detail-line { /* Ensures consistent styling for details */
+
+#time-search-results .forecast-detail-line {
+    /* Ensures consistent styling for details */
     font-size: 0.95rem;
     color: #CBD5E1; /* Slate-300 */
     margin-top: 0.2rem;
 }
 
+---
 
-/* Responsive Adjustments (from your previous code) */
+### Responsive Adjustments
 
+Your existing media queries are quite good! The main change I've made is addressing the `min-width: 850px` on `.left-column` and `.right-column` in their base (desktop) styles, which was removed. On desktop, they will now naturally size themselves based on the `flex: 2` property within the `main-weather-layout`'s `max-width: 1200px`, preventing any unintended horizontal scroll.
+
+The existing media queries below correctly transition these columns to `width: 100%` and `min-width: unset` on smaller screens, ensuring they stack properly and take full available width.
+
+```css
 /* Tablet & Smaller Desktop Screens (max-width: 1024px) */
 @media (max-width: 1024px) {
     /* Main weather grid adjustment for smaller desktops/large tablets */
@@ -1224,7 +2332,8 @@ footer {
     /* Main layout columns for smaller desktops/large tablets */
     .left-column,
     .right-column {
-        min-width: 400px; /* Adjust min-width if desired for these screens */
+        min-width: unset; /* Allow columns to shrink naturally */
+        width: 100%; /* Ensure they take full width when stacking */
     }
 }
 
@@ -1398,7 +2507,8 @@ footer {
         padding: 1rem;
         border-radius: 1rem;
     }
-    .detail-item svg, .detail-icon {
+    .detail-item svg,
+    .detail-icon {
         width: 28px;
         height: 28px;
     }
@@ -1432,7 +2542,8 @@ footer {
         gap: 0.8rem;
         padding: 0.5rem;
     }
-    .hourly-forecast-grid .hourly-item { /* Specific for modal items */
+    .hourly-forecast-grid .hourly-item {
+        /* Specific for modal items */
         padding: 0.8rem;
         border-radius: 0.8rem;
     }
@@ -1590,7 +2701,8 @@ footer {
         padding: 0.8rem;
         border-radius: 0.8rem;
     }
-    .detail-item svg, .detail-icon {
+    .detail-item svg,
+    .detail-icon {
         width: 24px;
         height: 24px;
     }
