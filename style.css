@@ -2349,7 +2349,7 @@ The existing media queries below correctly transition these columns to `width: 1
    body {
     margin: 0; /* Important: Remove default body margin */
     padding: 10px; /* Keep your existing body padding if you want it */
-    width: 100vw; /* Ensure the body itself takes exactly the viewport width */
+    width: 200w; /* Ensure the body itself takes exactly the viewport width */
     overflow-x: hidden; /* This is the key to hide horizontal overflow */
 }
 
