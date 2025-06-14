@@ -2398,7 +2398,7 @@ The existing media queries below correctly transition these columns to `width: 1
 
     .search-bar input[type="text"] {
         font-size: 1rem;
-        padding: 0.8rem 0.8rem;
+        padding: 0.8rem 1rem;
         border-radius: 1rem;
         max-width: 100px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
