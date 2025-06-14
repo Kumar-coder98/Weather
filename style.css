@@ -2349,7 +2349,7 @@ The existing media queries below correctly transition these columns to `width: 1
    body {
     margin: 0; /* Important: Remove default body margin */
     padding: 10px; /* Keep your existing body padding if you want it */
-    width: 200w; /* Ensure the body itself takes exactly the viewport width */
+    width: 100w; /* Ensure the body itself takes exactly the viewport width */
     overflow-x: hidden; /* This is the key to hide horizontal overflow */
 }
 
@@ -2381,7 +2381,7 @@ img {
         gap: 0.8rem;
         padding: 1.2rem 1.5rem;
         border-radius: 1rem;
-        max-width: 300; /* Allow full width */
+        max-width: 500; /* Allow full width */
     }
     .search-bar form {
         flex-grow: 1;
@@ -2392,7 +2392,7 @@ img {
         font-size: 1rem;
         padding: 0.8rem 1rem;
         border-radius: 1rem;
-         max-width: 200; /* Allow input to shrink maximally */
+         max-width: 400; /* Allow input to shrink maximally */
     }
     .search-bar button[type="submit"] {
         font-size: 1rem;
