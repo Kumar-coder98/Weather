@@ -2339,9 +2339,7 @@ The existing media queries below correctly transition these columns to `width: 1
 
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
-    body {
-        padding: 15px; /* Reduced overall padding */
-    }
+   
     #app {
         gap: 1.5rem; /* Reduced gap between sections */
     }
