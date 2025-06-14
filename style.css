@@ -2396,7 +2396,7 @@ footer {
         font-size: 1rem;
         padding: 0.8rem 1.2rem;
         border-radius: 1rem;
-        max-width: 120px; /* Remove specific width, let flex-grow handle it */
+        max-width: 140px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
         min-width: 80px; /* Provide a reasonable minimum width */
@@ -2652,7 +2652,6 @@ footer {
     }
 }
 
-/* Small Mobile Screens (max-width: 480px) */
 @media (max-width: 480px) {
     body {
         padding: 10px;
@@ -2680,23 +2679,20 @@ footer {
         padding: 0.6rem 0.6rem; /* Further reduced padding for very small screens */
         gap: 0.4rem;
         flex-wrap: nowrap; /* Keep input and buttons on one line */
-        width: 100%; /* Allow it to take nearly full width, body padding handles overflow */
+        width: 98vw; /* Allow it to take nearly full width, body padding handles overflow */
         max-width: unset; /* Remove any max-width constraints */
     }
 
     .search-bar form {
-        flex-grow: 1; /* Allow the form (input + search btn) to take available space */
-        display: flex; /* Ensure it's a flex container for its children */
         gap: 0.4rem;
-        flex-shrink: 1; /* Allow it to shrink */
-        min-width: 0
+        flex-grow: 1; /* Ensure form takes available space */
     }
 
     .search-bar input[type="text"] {
         font-size: 0.85rem;
-        padding: 0.5rem 0.6rem; /* Reduced padding for input field */
+        padding: 0.5rem 0.5rem; /* Reduced padding for input field */
         width: auto; /* Critical: Remove fixed width */
-        min-width: 130px; /* Smallest reasonable min-width for input field */
+        min-width: 60px; /* Smallest reasonable min-width for input field */
         flex-grow: 1; /* Allow it to grow */
         flex-shrink: 1; /* Allow it to shrink */
     }
@@ -2704,18 +2700,12 @@ footer {
     .search-bar button[type="submit"] {
         font-size: 0.85rem;
         padding: 0.5rem 0.8rem; /* Adjusted padding */
-        flex-shrink: 0;
     }
 
     .search-bar .location-btn {
-  width: 2.8rem; /* Fixed width */
-        height: 2.8rem; /* Fixed height to ensure it's a perfect circle */
-        flex-shrink: 0; /* CRITICAL: Prevent location button from shrinking */
-        border-radius: 50%; /* Ensure it stays circular */
-        padding: 0; /* Remove any padding that might interfere with size */
-        display: flex; /* Use flex to center icon inside */
-        justify-content: center;
-        align-items: center;
+        width: 2.6rem; /* Slightly smaller */
+        height: 2.6rem; /* Slightly smaller */
+        flex-shrink: 0;
     }
 
     .search-bar .location-btn img {
@@ -2728,8 +2718,8 @@ footer {
         flex-direction: column; /* Stack input and button vertically on very small screens */
         gap: 0.8rem;
         padding: 1rem;
-        max-width: unset;
-        width: 100%;
+        max-width: 95%;
+        width: auto;
         margin: 1.5rem auto 0;
     }
 
