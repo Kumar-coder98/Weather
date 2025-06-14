@@ -2381,7 +2381,7 @@ img {
         gap: 0.8rem;
         padding: 1.2rem 1.5rem;
         border-radius: 1rem;
-        max-width: none; /* Allow full width */
+        max-width: 200; /* Allow full width */
     }
     .search-bar form {
         flex-grow: 1;
@@ -2392,7 +2392,7 @@ img {
         font-size: 1rem;
         padding: 0.8rem 1rem;
         border-radius: 1rem;
-         max-width: 100; /* Allow input to shrink maximally */
+         max-width: 200; /* Allow input to shrink maximally */
     }
     .search-bar button[type="submit"] {
         font-size: 1rem;
