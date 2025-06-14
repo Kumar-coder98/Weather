@@ -2381,7 +2381,7 @@ img {
         gap: 0.8rem;
         padding: 1.2rem 1.5rem;
         border-radius: 1rem;
-        max-width: 200; /* Allow full width */
+        max-width: 300; /* Allow full width */
     }
     .search-bar form {
         flex-grow: 1;
