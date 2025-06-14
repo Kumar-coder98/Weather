@@ -2400,8 +2400,7 @@ img {
     padding: 0.7rem 1rem;
     border-radius: 1rem;
     width: 100%;
-    min-width: 0;
-    max-width:none;/* Remove artificial limit */
+    max-width:100%;/* Remove artificial limit */
     flex-grow: 1;
     flex-shrink: 1;
 }
