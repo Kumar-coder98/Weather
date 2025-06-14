@@ -2400,7 +2400,7 @@ The existing media queries below correctly transition these columns to `width: 1
         font-size: 1rem;
         padding: 0.8rem 1.2rem;
         border-radius: 1rem;
-        max-width: 300px; /* Remove specific width, let flex-grow handle it */
+        max-width: 200px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
         min-width: 80px; /* Provide a reasonable minimum width */
