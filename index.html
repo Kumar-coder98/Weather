@@ -2,66 +2,94 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Weatherly</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weatherly</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div id="app">
-    <header class="weather-header">
-      <h1>Weatherly</h1>
-      <p>Get the latest weather updates for your city</p>
+    <div id="app">
+        <!-- Header -->
+        <header class="weather-header">
+            <h1>Weatherly</h1>
+            <p>Get the latest weather updates for your city</p>
+        </header>
 
-    </header>
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <form id="search-form" autocomplete="off">
+                <div style="position: relative; flex: 1;">
+                    <input id="city-input" type="text" placeholder="Search for a city..." />
+                </div>
+                <button type="submit">Search</button>
+            </form>
 
-    <div class="search-bar" width="100%" align="center">
-
-      <form id="search-form" autocomplete="off" align="center">
-        <div style="position: relative; flex: 1 ; align : center ;">
-          <input id="city-input" type="text" placeholder="Search for a city..." />
-
+            <button class="location-btn" id="location-btn" title="Use current location" aria-label="Use current location">
+                <img src="https://cdn-icons-png.freepik.com/256/11741/11741543.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming"
+                    alt="Location Icon" height="30" width="30" />
+            </button>
         </div>
-        <button type="submit" align="center">Search</button>
-      </form>
-      <button class="location-btn" id="location-btn" title="Use current location" aria-label="Use current location" align="center">
-        <img
-          src="https://cdn-icons-png.freepik.com/256/11741/11741543.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming" align="center"
-          alt="Location Icon" height="30" width="30" />
-      </button>
+
+        <!-- Loading Indicator -->
+        <div id="loading" style="display:none;">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading weather data...</div>
+        </div>
+
+        <!-- Main Weather Layout -->
+        <div class="main-weather-layout">
+            <!-- Left Column -->
+            <div class="left-column">
+                <!-- Weather Container -->
+                <div id="weather-container">
+                    <div class="weather-grid">
+                        <div class="weather-card card" id="weather-card"></div>
+                    </div>
+                </div>
+
+                <!-- Hourly Weather Summary -->
+                <div id="hourly-weather-container"></div>
+            <div class="weather-details" id="weather-details"></div></div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <div class="forecast-card card" id="forecast-card"></div>
+            </div>
+        </div>
+
+        <!-- Weather Details Section -->
+        
+
+        <!-- Footer -->
+        <footer>
+            <p>Powered by OpenWeatherMap API • Built with JavaScript</p>
+        </footer>
     </div>
 
-    <div id="loading" style="display:none; text-align:center; margin-bottom: 1rem;">
-      <div class="spinner"></div>
-      <div class="loading-text">Loading weather data...</div>
+    <!-- Toast Notifications -->
+    <div id="toast-container" style="
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    "></div>
+
+    <!-- Hourly Forecast Modal -->
+    <div id="hourly-forecast-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close-btn">&times;</button>
+            <h3 id="hourly-forecast-title" class="modal-title"></h3>
+            <div id="hourly-forecast-grid" class="hourly-forecast-grid">
+                <!-- Hourly forecast items injected by JS -->
+            </div>
+        </div>
     </div>
 
-    <div id="weather-container" style="display:none;">
-      <div class="weather-grid">
-        <div class="weather-card card" id="weather-card"></div>
-        <div class="forecast-card card" id="forecast-card"></div>
-      </div>
-      <div class="weather-details" id="weather-details"></div>
-    </div>
-
-    <footer>
-      <p>Powered by OpenWeatherMap API • Built with JavaScript</p>
-    </footer>
-  </div>
-  <div id="toast-container" style="
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-"></div>
-
-  <script src="script.js"></script>
-
-
+    <script src="script.js"></script>
 </body>
 
 </html>
