@@ -2323,11 +2323,7 @@ footer {
 
 ---
 
-### Responsive Adjustments
 
-Your existing media queries are quite good! The main change I've made is addressing the `min-width: 850px` on `.left-column` and `.right-column` in their base (desktop) styles, which was removed. On desktop, they will now naturally size themselves based on the `flex: 2` property within the `main-weather-layout`'s `max-width: 1200px`, preventing any unintended horizontal scroll.
-
-The existing media queries below correctly transition these columns to `width: 100%` and `min-width: unset` on smaller screens, ensuring they stack properly and take full available width.
 /* Tablet & Smaller Desktop Screens (max-width: 1024px) */
 @media (max-width: 1024px) {
     /* Main weather grid adjustment for smaller desktops/large tablets */
@@ -2400,7 +2396,7 @@ The existing media queries below correctly transition these columns to `width: 1
         font-size: 1rem;
         padding: 0.8rem 1.2rem;
         border-radius: 1rem;
-        max-width: 200px; /* Remove specific width, let flex-grow handle it */
+        max-width: 120px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
         min-width: 80px; /* Provide a reasonable minimum width */
