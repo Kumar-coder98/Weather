@@ -2384,7 +2384,7 @@ The existing media queries below correctly transition these columns to `width: 1
         gap: 0.8rem; /* Slightly reduced gap */
         padding: 1.2rem 1.5rem; /* Adjusted padding */
         border-radius: 1.2rem;
-        max-width: 200px; /* Allow it to be slightly smaller than full width */
+        max-width: 100px; /* Allow it to be slightly smaller than full width */
         width: auto; /* Let content dictate width within max-width */
         margin: 0 auto;
     }
@@ -2403,7 +2403,7 @@ The existing media queries below correctly transition these columns to `width: 1
         width: auto; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
-        min-width: 120px; /* Provide a reasonable minimum width */
+        min-width: 80px; /* Provide a reasonable minimum width */
     }
 
     .search-bar button[type="submit"] {
