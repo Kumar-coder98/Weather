@@ -2339,7 +2339,19 @@ The existing media queries below correctly transition these columns to `width: 1
 
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
-   
+   body {
+    margin: 0; /* Important: Remove default body margin */
+    padding: 10px; /* Keep your existing body padding if you want it */
+    width: 100vw; /* Ensure the body itself takes exactly the viewport width */
+    overflow-x: hidden; /* This is the key to hide horizontal overflow */
+}
+
+/* Also, good practice for images to prevent them from overflowing */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Helps prevent extra space below images */
+}
     #app {
         gap: 1.5rem; /* Reduced gap between sections */
     }
