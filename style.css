@@ -2375,7 +2375,7 @@ The existing media queries below correctly transition these columns to `width: 1
         font-size: 1rem;
         padding: 0.8rem 1rem;
         border-radius: 1rem;
-        min-width: 0; /* Allow input to shrink maximally */
+         max-width: 100; /* Allow input to shrink maximally */
     }
     .search-bar button[type="submit"] {
         font-size: 1rem;
