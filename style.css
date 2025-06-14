@@ -2381,7 +2381,9 @@ img {
         gap: 0.8rem;
         padding: 1.2rem 1.5rem;
         border-radius: 1rem;
-        min-width: 500; /* Allow full width */
+     max-width: 100%;           /* allow full width relative to parent */
+    width: 90vw;               /* or a specific pixel size like 600px */
+    margin: 0 auto; 
     }
     .search-bar form {
         flex-grow: 1;
