@@ -2,6 +2,13 @@
  * General Global Styles & Body Setup
  * Sets base font, background, and centers the main app container.
  */
+/* Add this at the very top of your CSS file */
+html {
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+} 
 body {
     margin: 0;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
