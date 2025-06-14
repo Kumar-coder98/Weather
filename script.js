@@ -1,18 +1,18 @@
-// Your weather API key
+// Your weather API key - Replace with your actual key if different
 const API_KEY = 'aa0ae27e321c7b189650522b6a20cba1';
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
-// Helper functions for API calls
+// Helper function to fetch JSON from a URL
 async function fetchJSON(url) {
     const res = await fetch(url);
     if (!res.ok) {
-        // Throw a specific error for network issues or bad responses
-        const errorData = await res.json().catch(() => ({})); // Try to parse error body
+        const errorData = await res.json().catch(() => ({}));
         throw new Error(`HTTP error! Status: ${res.status}, Message: ${errorData.message || res.statusText}`);
     }
     return await res.json();
 }
 
+// Function to get current weather data by coordinates
 async function getCurrentWeather(lat, lon) {
     const url = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
     const data = await fetchJSON(url);
@@ -32,12 +32,13 @@ async function getCurrentWeather(lat, lon) {
         sunrise: data.sys.sunrise,
         sunset: data.sys.sunset,
         coord: data.coord,
-        timezone: data.timezone, // Include timezone offset from UTC in seconds
+        timezone: data.timezone,
     };
 }
 
+// Function to get weather data by city name
 async function getWeatherByCity(city) {
-    document.body.style.backgroundAttachment = 'fixed'; // Ensure background attachment remains fixed
+    document.body.style.backgroundAttachment = 'fixed';
     const url = `${BASE_URL}/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`;
     const data = await fetchJSON(url);
     return {
@@ -56,35 +57,67 @@ async function getWeatherByCity(city) {
         sunrise: data.sys.sunrise,
         sunset: data.sys.sunset,
         coord: data.coord,
-        timezone: data.timezone, // Include timezone offset from UTC in seconds
+        timezone: data.timezone,
     };
 }
 
+// Global variables for forecast data and timezone
+let fullForecastData = {}; // Stores grouped 3-hour forecast data
+window.fullHourlyList = []; // Stores raw list of all 3-hour forecasts
+window.timezoneOffset = 0; // Stores timezone offset from UTC in seconds
+
+// Function to get 5-day / 3-hour forecast data
 async function getForecast(lat, lon) {
     const url = `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
     const data = await fetchJSON(url);
-    const daily = {};
-    // Group forecast data by date, taking the first entry for each day
+    window.fullHourlyList = data.list;
+    window.timezoneOffset = data.city.timezone || 0;
+
+    const dailySummaries = {};
+    const detailedForecastByDay = {};
+
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const currentDate = new Date(currentTimestamp * 1000);
+    const currentDay = currentDate.toISOString().split('T')[0];
+
     data.list.forEach(item => {
-        const date = item.dt_txt.split(" ")[0];
-        if (!daily[date]) {
-            daily[date] = item;
+        const dateKey = item.dt_txt.split(" ")[0];
+
+        if (!detailedForecastByDay[dateKey]) {
+            detailedForecastByDay[dateKey] = [];
+        }
+        detailedForecastByDay[dateKey].push(item);
+
+        if (!dailySummaries[dateKey]) {
+            dailySummaries[dateKey] = {
+                date: item.dt_txt,
+                temp_max: item.main.temp_max,
+                temp_min: item.main.temp_min,
+                description: item.weather[0].description,
+                main: item.weather[0].main,
+                icon: item.weather[0].icon,
+            };
+        } else {
+            dailySummaries[dateKey].temp_max = Math.max(dailySummaries[dateKey].temp_max, item.main.temp_max);
+            dailySummaries[dateKey].temp_min = Math.min(dailySummaries[dateKey].temp_min, item.main.temp_min);
         }
     });
-    // Return only the next 5 days of forecast
-    return Object.values(daily).slice(0, 5).map(item => ({
-        date: item.dt_txt, // Keep full datetime for proper Date object creation
-        temp_max: item.main.temp_max,
-        temp_min: item.main.temp_min,
-        description: item.weather[0].description,
-        main: item.weather[0].main,
-        humidity: item.main.humidity,
-        icon: item.weather[0].icon, // Include icon for forecast cards
-    }));
-}
 
+    fullForecastData = detailedForecastByDay;
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowKey = tomorrow.toISOString().split('T')[0];
+
+    const summarizedForecast = Object.values(dailySummaries)
+        .filter(day => day.date.split(' ')[0] >= tomorrowKey)
+        .slice(0, 5);
+
+    return { todayForecast: detailedForecastByDay[currentDay] || [], summarizedForecast };
+}
+// Function to get current geolocation
 async function getCurrentLocation() {
-    document.body.style.backgroundAttachment = 'fixed'; // Ensure background attachment remains fixed
+    document.body.style.backgroundAttachment = 'fixed';
 
     return new Promise((resolve, reject) => {
         if (!navigator.geolocation) {
@@ -98,12 +131,9 @@ async function getCurrentLocation() {
                 const lon = position.coords.longitude;
 
                 try {
-                    // Fetch location name using BigDataCloud API
                     const res = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`);
                     const data = await res.json();
-                    // Prioritize city, then locality, then subdivision, fallback to generic
                     const locationName = data.city || data.locality || data.principalSubdivision || 'Unknown location';
-
                     resolve({ lat, lon });
                 } catch (err) {
                     reject(new Error('Failed to fetch location name.'));
@@ -127,18 +157,25 @@ async function getCurrentLocation() {
 }
 
 
-// UI Elements
+// UI Elements - Ensure these IDs match your HTML
 const searchForm = document.getElementById('search-form');
 const cityInput = document.getElementById('city-input');
 const locationBtn = document.getElementById('location-btn');
 const loadingDiv = document.getElementById('loading');
-const weatherContainer = document.getElementById('weather-container'); // Main container for all weather data
-const weatherCard = document.getElementById('weather-card'); // Element for current weather display
-const forecastCard = document.getElementById('forecast-card'); // Element for 5-day forecast display
-const weatherDetails = document.getElementById('weather-details'); // Element for detailed weather info
-const toastContainer = document.getElementById('toast-container'); // Container for toast messages
+const weatherContainer = document.getElementById('weather-container');
+const weatherCard = document.getElementById('weather-card');
+const forecastCard = document.getElementById('forecast-card');
+const weatherDetails = document.getElementById('weather-details');
+const toastContainer = document.getElementById('toast-container');
+const hourlyWeatherContainer = document.getElementById('hourly-weather-container'); // Added this reference
 
-// State
+// Modal elements
+const hourlyForecastModal = document.getElementById('hourly-forecast-modal');
+const hourlyForecastTitle = document.getElementById('hourly-forecast-title');
+const hourlyForecastGrid = document.getElementById('hourly-forecast-grid');
+const modalCloseBtn = document.querySelector('.modal-close-btn');
+
+// State variable
 let currentCoordinates = null;
 
 // Background images mapping OpenWeatherMap icons to high-quality GIF links
@@ -162,7 +199,6 @@ const weatherGifs = {
     "50d": "mist.jpg", // Mist/Fog
     "50n": "mist.jpg"
 };
-
 
 // Mapping of 2-letter country codes to full country names
 const countryNames = {
@@ -203,7 +239,7 @@ const countryNames = {
     "NE": "Niger", "NF": "Norfolk Island", "NG": "Nigeria", "NI": "Nicaragua", "NL": "Netherlands",
     "NO": "Norway", "NP": "Nepal", "NR": "Nauru", "NU": "Niue", "NZ": "New Zealand",
     "OM": "Oman", "PA": "Panama", "PE": "Peru", "PF": "French Polynesia", "PG": "Papua New Guinea",
-    "PH": "Philippines", "PK": "Pakistan", "PL": "Poland", "PM": "Saint Pierre and Micquelon", "PN": "Pitcairn",
+    "PH": "Philippines", "PK": "Pakistan", "PL": "Poland", "PM": "Saint Pierre and Miquelon", "PN": "Pitcairn",
     "PR": "Puerto Rico", "PS": "Palestine, State of", "PT": "Portugal", "PW": "Palau", "PY": "Paraguay",
     "QA": "Qatar", "RE": "Réunion", "RO": "Romania", "RS": "Serbia", "RU": "Russian Federation",
     "RW": "Rwanda", "SA": "Saudi Arabia", "SB": "Solomon Islands", "SC": "Seychelles", "SD": "Sudan",
@@ -221,131 +257,184 @@ const countryNames = {
     "YT": "Mayotte", "ZA": "South Africa", "ZM": "Zambia", "ZW": "Zimbabwe"
 };
 
-
-// Helper: Show toast messages (custom DOM element instead of alert)
+// Helper function to show toast messages
 function showToast({ title, description, variant }) {
-    // Clear existing toasts if any (optional, but good for single-error display)
-    // toastContainer.innerHTML = ''; 
-
     const toast = document.createElement('div');
     toast.classList.add('toast-notification');
-    
-    // Add variant-specific classes for styling (e.g., background color)
     if (variant === 'destructive') {
         toast.classList.add('toast-destructive');
     } else if (variant === 'success') {
         toast.classList.add('toast-success');
     }
-
     toast.innerHTML = `
         <h4 class="toast-title">${title}</h4>
         <p class="toast-description">${description}</p>
         <button class="toast-close-btn">&times;</button>
     `;
-
     toastContainer.appendChild(toast);
-
-    // Add event listener to close button
     const closeButton = toast.querySelector('.toast-close-btn');
     closeButton.addEventListener('click', () => {
-        toast.classList.add('hide'); // Add a class for fade-out animation
+        toast.classList.add('hide');
         toast.addEventListener('animationend', () => toast.remove(), { once: true });
     });
-
-    // Automatically remove toast after 5 seconds
     setTimeout(() => {
-        if (toast.parentNode === toastContainer) { // Check if it hasn't been manually closed
-            toast.classList.add('hide'); // Add a class for fade-out animation
+        if (toast.parentNode === toastContainer) {
+            toast.classList.add('hide');
             toast.addEventListener('animationend', () => toast.remove(), { once: true });
         }
-    }, 5000); // 5 seconds
+    }, 5000);
 }
 
+// Custom icon URLs for weather conditions
+const customIcons = {
+    "01d": "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "01n": "https://cdn-icons-png.freepik.com/256/10440/10440114.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "02d": "https://cdn-icons-png.freepik.com/256/15201/15201043.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "02n": "https://cdn-icons-png.freepik.com/256/15201/15201043.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "03d": "https://cdn-icons-png.freepik.com/256/1417/1417777.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "03n": "https://cdn-icons-png.freepik.com/256/1417/1417777.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "04d": "https://cdn-icons-png.freepik.com/256/13762/13762834.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "04n": "https://cdn-icons-png.freepik.com/256/13762/13762834.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "09d": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png",
+    "09n": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png",
+    "10d": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png",
+    "10n": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png",
+    "11d": "https://cdn-icons-png.freepik.com/256/9139/9139426.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "11n": "https://cdn-icons-png.freepik.com/256/9523/9523135.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "13d": "https://cdn-icons-png.freepik.com/256/6235/6235533.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "13n": "https://cdn-icons-png.freepik.com/256/6235/6235533.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "50d": "https://cdn-icons-png.freepik.com/256/13594/13594982.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming",
+    "50n": "https://cdn-icons-png.freepik.com/256/13594/13594982.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming"
+};
 
-// Render functions
+// Render functions for various weather components
 function renderWeatherCard(weather) {
-    if (!weather) return;
-    const iconUrl = customIcons[weather.icon] || "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming"; // Fallback to a default clear sky icon
+    if (!weather) {
+        weatherCard.innerHTML = ''; // Clear card if no weather data
+        return;
+    }
+    const iconUrl = customIcons[weather.icon] || "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming";
 
-    // Calculate the current UTC timestamp (milliseconds since epoch).
-    const currentTimestampMs = Date.now(); 
-    // City's timezone offset from UTC in milliseconds.
-    const cityTimezoneOffsetMs = weather.timezone * 1000; 
-
-    // Calculate the current local timestamp in the city.
+    const currentTimestampMs = Date.now();
+    const cityTimezoneOffsetMs = weather.timezone * 1000;
     const cityLocalTimestampMs = currentTimestampMs + cityTimezoneOffsetMs;
-    
-    // Create a Date object from this calculated timestamp.
     const cityDate = new Date(cityLocalTimestampMs);
 
-    // Format the date for the city, now including the year.
     const formattedCityDate = cityDate.toLocaleDateString([], {
-        weekday: 'short',   // e.g., "Mon"
-        month: 'short',     // e.g., "Jul"
-        day: 'numeric',     // e.g., "25"
-        year: 'numeric',    // NEW: e.g., "2024"
-        timeZone: 'UTC'     // Crucial to interpret cityDate's internal value as UTC for correct formatting
+        weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC'
     });
-
-    // Format the time for the city.
     const formattedCityTime = cityDate.toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true, // Display in 12-hour format with AM/PM
-        timeZone: 'UTC' // Crucial for displaying the exact calculated local time
+        hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'UTC'
     });
 
-    // Get the full country name from the mapping
-    const fullCountryName = countryNames[weather.country] || weather.country; // Fallback to code if not found
+    const fullCountryName = countryNames[weather.country] || weather.country;
 
     weatherCard.innerHTML = `
         <h2 id="location-display">${weather.name}, ${fullCountryName}</h2>
         <br>
-        <p class="weather-temp">${Math.round(weather.temp)}&deg;C</p>
-        <p class="weather-datetime-text">Date: ${formattedCityDate}</p> <!-- Added new class -->
-        <p class="weather-datetime-text">Time: ${formattedCityTime}</p> <!-- Added new class -->
-        <p>Feels like: ${Math.round(weather.feels_like)}&deg;C</p>
+       <p class="weather-temp">
+  ${Math.round(weather.temp)}&deg;C 
+  <span class="feels-like">(Feels like: ${Math.round(weather.feels_like)}&deg;C)</span>
+</p>
+
+        <p class="weather-datetime-text">Date: ${formattedCityDate} </p>
+        <p class="weather-datetime-text">Time: ${formattedCityTime}</p>
+      
         <img src="${iconUrl}" alt="${weather.description}" class="weather-icon" />
         <p class="desc">${weather.description}</p>
     `;
 }
 
-// Custom icons mapping OpenWeatherMap icons to your desired icons
-const customIcons = {
-    "01d": "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Clear Day
-    "01n": "https://cdn-icons-png.freepik.com/256/10440/10440114.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Clear Night
-    "02d": "https://cdn-icons-png.freepik.com/256/15201/15201043.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Few Clouds Day
-    "02n": "https://cdn-icons-png.freepik.com/256/15201/15201043.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Few Clouds Night
-    "03d": "https://cdn-icons-png.freepik.com/256/1417/1417777.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Scattered Clouds
-    "03n": "https://cdn-icons-png.freepik.com/256/1417/1417777.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Scattered Clouds
-    "04d": "https://cdn-icons-png.freepik.com/256/13762/13762834.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Broken Clouds
-    "04n": "https://cdn-icons-png.freepik.com/256/13762/13762834.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Broken Clouds
-    "09d": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png", // Shower Rain
-    "09n": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png", // Shower Rain
-    "10d": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png", // Rain
-    "10n": "https://th.bing.com/th/id/OIP.ulwM8AnrrA8xPJJpzmyaCAHaHa?rs=1&pid=ImgDetMain.png", // Rain
-    "11d": "https://cdn-icons-png.freepik.com/256/9139/9139426.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Thunderstorm
-    "11n": "https://cdn-icons-png.freepik.com/256/9523/9523135.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Thunderstorm
-    "13d": "https://cdn-icons-png.freepik.com/256/6235/6235533.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Snow
-    "13n": "https://cdn-icons-png.freepik.com/256/6235/6235533.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Snow
-    "50d": "https://cdn-icons-png.freepik.com/256/13594/13594982.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming", // Mist/Fog
-    "50n": "https://cdn-icons-png.freepik.com/256/13594/13594982.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming" // Mist/Fog
-};
+// Renders the hourly weather block on the main card (original logic from your initial code)
+function renderHourlyWeatherBlock(dateKey = new Date().toISOString().split('T')[0]) {
+    const selectedDate = new Date(dateKey);
+    const todayKey = selectedDate.toISOString().split('T')[0];
+    const hourlyDataForToday = fullForecastData[todayKey] || [];
 
+    if (hourlyDataForToday.length === 0) {
+        hourlyWeatherContainer.innerHTML = '<h3>Hourly Weather</h3><p>No hourly weather data available for today.</p>';
+        return;
+    }
+
+    const now = new Date();
+    const currentHour = now.getHours();
+
+    // Define time slots from 00:00 to 22:00 in 2-hour intervals
+    const timeArray = [];
+    for (let i = 0; i <= 22; i += 2) {
+        // Exclude current hour, previous hour, and next hour
+        if (i === currentHour || i === currentHour - 1 || i === currentHour + 1) {
+            continue;
+        }
+        timeArray.push(i.toString().padStart(2, '0') + ':00');
+    }
+
+    const hourlyWeatherHtml = timeArray.map(timeStr => {
+        const [targetHour, targetMin] = timeStr.split(':').map(Number);
+        const targetTotalMinutes = targetHour * 60 + targetMin;
+
+        let closest = null;
+        let minDiff = Infinity;
+
+        hourlyDataForToday.forEach(item => {
+            const itemLocalDate = new Date(item.dt * 1000 + timezoneOffset * 1000);
+            const itemHour = itemLocalDate.getHours();
+            const itemMin = itemLocalDate.getMinutes();
+            const itemTotalMinutes = itemHour * 60 + itemMin;
+
+            const diff = Math.abs(targetTotalMinutes - itemTotalMinutes);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closest = item;
+            }
+        });
+
+        if (!closest) return '';
+
+        const displayHour = targetHour % 12 === 0 ? 12 : targetHour % 12;
+        const ampm = targetHour < 12 ? 'AM' : 'PM';
+        const displayTime = `${displayHour}:00 ${ampm}`;
+
+        const iconUrl = customIcons[closest.weather[0].icon] || "https://cdn-icons-png.freepik.com/256/7645/7645246.png";
+
+        return `
+            <div class="hourly-item">
+                <div class="hourly-time">${displayTime}</div>
+                <img src="${iconUrl}" alt="${closest.weather[0].description}" class="hourly-icon" />
+                <div class="hourly-temp">${Math.round(closest.main.temp)}&deg;C</div>
+                <div class="hourly-description">${closest.weather[0].description}</div>
+            </div>
+        `;
+    }).join('');
+
+    hourlyWeatherContainer.innerHTML = `
+        <h3>Hourly Weather for ${todayKey}</h3>
+        <div class="hourly-weather-summary">
+            ${hourlyWeatherHtml}
+        </div>
+    `;
+}
+
+
+
+
+// Renders the 5-day forecast card
 function renderForecastCard(forecast) {
     if (!forecast || forecast.length === 0) {
-        forecastCard.innerHTML = '<p style="text-align: center; color: #64748b; font-size: 1rem;">No forecast data available.</p>';
+        forecastCard.innerHTML = '<p style="text-align: center; ; font-size: 1rem;">No forecast data available.</p>';
+        // Ensure the card itself is hidden if no data
+        forecastCard.style.display = 'none';
         return;
     }
     const itemsHtml = forecast.map(day => {
         const dateObj = new Date(day.date);
         const options = { weekday: 'short', month: 'short', day: 'numeric' };
         const formattedDate = dateObj.toLocaleDateString([], options);
-        // Fallback icon for forecast if custom icon is not found
-        const forecastIconUrl = customIcons[day.icon] || "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming"; // A generic icon
+        const dateKey = day.date.split(" ")[0];
+        const forecastIconUrl = customIcons[day.icon] || "https://cdn-icons-png.freepik.com/256/7645/7645246.png?ga=GA1.1.610150482.1748688071&semt=ais_incoming";
 
         return `
-            <div class="forecast-day">
+            <div class="forecast-day" data-date="${dateKey}">
                 <div class="forecast-date-temps">
                     <div class="forecast-date">${formattedDate}</div>
                     <div class="forecast-max-min-temps">
@@ -361,11 +450,21 @@ function renderForecastCard(forecast) {
         `;
     }).join('');
     forecastCard.innerHTML = itemsHtml;
+    forecastCard.style.display = 'block'; // Ensure card is visible if data exists
+
+    document.querySelectorAll('.forecast-day').forEach(card => {
+        card.addEventListener('click', (event) => {
+            const selectedDate = event.currentTarget.dataset.date;
+            displayHourlyForecast(selectedDate);
+        });
+    });
 }
 
+// Renders detailed weather information
 function renderWeatherDetails(details) {
     if (!details) {
         weatherDetails.innerHTML = '';
+        weatherDetails.style.display = 'none'; // Ensure block is hidden if no details
         return;
     }
 
@@ -432,31 +531,146 @@ function renderWeatherDetails(details) {
             </div>
         </div>
     `;
+    weatherDetails.style.display = 'block'; // Ensure block is visible if details exist
 }
 
-// Function to control loading state
-function showLoading(isLoading) {
+// Function to control loading state visibility and main content visibility
+function showLoading(isLoading, isError = false) {
     loadingDiv.style.display = isLoading ? 'block' : 'none';
-    weatherContainer.style.opacity = isLoading ? '0' : '1'; // Hide/show weather content during loading
-    weatherContainer.style.pointerEvents = isLoading ? 'none' : 'auto'; // Disable interaction
+    weatherContainer.style.opacity = isLoading ? '0' : '1';
+    weatherContainer.style.pointerEvents = isLoading ? 'none' : 'auto';
+
+    const leftColumn = document.querySelector('.left-column');
+    const rightColumn = document.querySelector('.right-column');
+    const mainLayout = document.getElementById('main-weather-layout');
+
+    // If loading, or if an error occurred, hide all main weather content
+    if (isLoading || isError) {
+        weatherContainer.style.display = 'none';
+        weatherDetails.style.display = 'none';
+        forecastCard.style.display = 'none';
+        hourlyWeatherContainer.style.display = 'none'; // Also hide the hourly container
+        if (leftColumn) leftColumn.style.display = 'none';
+        if (rightColumn) rightColumn.style.display = 'none';
+        if (mainLayout) mainLayout.style.display = 'none';
+        // Reset background to default on error
+        if (isError) {
+            document.body.style.backgroundColor = '#152544';
+        }
+    } else { // If not loading and no error, show main weather content
+        weatherContainer.style.display = 'block'; // Or 'flex' based on your layout
+        weatherDetails.style.display = 'block'; // Or 'flex'
+        forecastCard.style.display = 'block'; // Or 'flex'
+        hourlyWeatherContainer.style.display = 'block'; // Or 'flex'
+        if (leftColumn) leftColumn.style.display = 'flex'; // Assuming flex for columns
+        if (rightColumn) rightColumn.style.display = 'flex'; // Assuming flex for columns
+        if (mainLayout) mainLayout.style.display = 'flex'; // Assuming flex for main layout
+    }
 }
+
+// Displays the 3-hour forecast for a specific date in a modal (original logic)
+function displayHourlyForecast(dateKey) {
+    const selectedDate = new Date(dateKey);
+
+    // Filter all forecast items that belong to the selected date (adjusted to local time)
+    const hourlyData = fullHourlyList.filter(item => {
+        const localTime = new Date(item.dt * 1000 + timezoneOffset * 1000);
+        return localTime.toISOString().split('T')[0] === dateKey;
+    });
+
+    // Show a toast if no hourly data exists
+    if (hourlyData.length === 0) {
+        showToast({
+            title: "No Data",
+            description: "No detailed hourly forecast available for this day.",
+            variant: 'destructive'
+        });
+        return;
+    }
+
+    // Sort the filtered data chronologically by local time
+    hourlyData.sort((a, b) => {
+        const timeA = new Date(a.dt * 1000 + timezoneOffset * 1000).getTime();
+        const timeB = new Date(b.dt * 1000 + timezoneOffset * 1000).getTime();
+        return timeA - timeB;
+    });
+
+    // Set a cutoff time of 11:59 PM local time for the selected date
+    const cutoff = new Date(dateKey + 'T23:59:59');
+    const cutoffTimestamp = cutoff.getTime();
+
+    // Filter out any entries that fall beyond 11:59 PM
+    const filteredHourlyData = hourlyData.filter(item => {
+        const itemLocalTime = new Date(item.dt * 1000 + timezoneOffset * 1000).getTime();
+        return itemLocalTime <= cutoffTimestamp;
+    });
+
+    // Format the modal title
+    const titleOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedTitleDate = selectedDate.toLocaleDateString([], titleOptions);
+    hourlyForecastTitle.textContent = `Hourly Forecast for ${formattedTitleDate}`;
+
+    // Clear previous data
+    hourlyForecastGrid.innerHTML = '';
+
+    // Render each hourly item
+    filteredHourlyData.forEach(item => {
+        const localTime = new Date(item.dt * 1000 + timezoneOffset * 1000);
+        const time = localTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+        const iconUrl = customIcons[item.weather[0].icon] || "https://cdn-icons-png.freepik.com/256/7645/7645246.png";
+
+        const hourlyItemHtml = `
+            <div class="hourly-item">
+                <div class="hourly-time">${time}</div>
+                <img src="${iconUrl}" alt="${item.weather[0].description}" class="hourly-icon" />
+                <div class="hourly-temp">${Math.round(item.main.temp)}&deg;C</div>
+                <div class="hourly-description">${item.weather[0].description}</div>
+            </div>
+        `;
+
+        hourlyForecastGrid.insertAdjacentHTML('beforeend', hourlyItemHtml);
+    });
+
+    // Show the modal
+    showHourlyForecastModal();
+}
+
+
+// Shows the hourly forecast modal
+function showHourlyForecastModal() {
+    hourlyForecastModal.style.display = 'flex';
+    void hourlyForecastModal.offsetWidth; // Trigger reflow for transition
+    hourlyForecastModal.classList.add('show');
+}
+
+// Hides the hourly forecast modal
+function hideHourlyForecastModal() {
+    hourlyForecastModal.classList.remove('show');
+    hourlyForecastModal.addEventListener('transitionend', () => {
+        hourlyForecastModal.style.display = 'none';
+    }, { once: true });
+}
+
+document.body.style.background = 'linear-gradient(145deg, #1A1A2E, #16213E, #0F3460)';
+document.body.style.backgroundSize = 'cover';
+document.body.style.backgroundRepeat = 'no-repeat';
+document.body.style.backgroundPosition = 'center';
+document.body.style.backgroundAttachment = 'fixed'; // Ensure this is consistently applied 
 
 // Main function to load and display weather data
 async function loadWeatherData(lat, lon) {
     try {
-        showLoading(true); // Show loading spinner
+        showLoading(true); // Start loading, hide content
         console.log('Loading weather data for:', lat, lon);
 
-        const [weatherData, forecastData] = await Promise.all([
-            getCurrentWeather(lat, lon),
-            getForecast(lat, lon),
-        ]);
+        const { todayForecast, summarizedForecast } = await getForecast(lat, lon);
+        const weatherData = await getCurrentWeather(lat, lon);
 
-        currentCoordinates = { lat, lon }; // Update global coordinates
+        currentCoordinates = { lat, lon };
 
-        renderWeatherCard(weatherData); // Render current weather
-        renderForecastCard(forecastData); // Render 5-day forecast
-        renderWeatherDetails({ // Render detailed weather information
+        renderWeatherCard(weatherData); // Removed todayForecast from here, it's not used in this render function
+        renderForecastCard(summarizedForecast);
+        renderWeatherDetails({
             pressure: weatherData.pressure,
             humidity: weatherData.humidity,
             visibility: weatherData.visibility,
@@ -467,64 +681,62 @@ async function loadWeatherData(lat, lon) {
             sunset: weatherData.sunset,
         });
 
-        // Set dynamic background image based on weather condition icon
+        renderHourlyWeatherBlock();
+
         const iconCode = weatherData.icon;
         const gifUrl = weatherGifs[iconCode];
         document.body.style.backgroundImage = `url(${gifUrl})`;
+ // Ensure this is consistently applied
+
+        // After successful data load, show the elements
+        showLoading(false); // End loading, show content
+        weatherContainer.classList.add('fade-in');
+        
+   if (weatherCard) {
+    const offset = 120; // More noticeable scroll offset
+    const top = weatherCard.getBoundingClientRect().top + window.pageYOffset - offset;
+
+    window.scrollTo({
+        top: top,
+        behavior: 'smooth'
+    });
+}
+
+        const fullCountryName = countryNames[weatherData.country] || weatherData.country;
+        showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}, ${fullCountryName}`, variant: 'success' });
+    } catch (err) {
+        console.error("Error loading weather data:", err);
+        showLoading(false, true); // End loading, indicating an error occurred
+        showToast({ variant: 'destructive', title: "Error", description: "Failed to load weather data. Please try again. " + err.message });
+        // The showLoading(false, true) call above will handle hiding all elements and resetting background
+    }
+}
+
+document.body.style.background = 'linear-gradient(145deg, #1A1A2E, #16213E, #0F3460)';
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundRepeat = 'no-repeat';
         document.body.style.backgroundPosition = 'center';
-
-        weatherContainer.style.display = 'block'; // Make weather container visible
-        weatherContainer.classList.add('fade-in'); // Apply fade-in animation
-
-        // --- Conditional Scroll Behavior ---
-        if (window.innerWidth > 768) { // Check if the view is desktop
-            // Smooth scroll to the weather card (which contains the temperature)
-            if (weatherCard) {
-                weatherCard.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start' // This will place the top of the weather card at the top of the viewport
-                });
-            }
-        }
-        // --- End Conditional Scroll Behavior ---
-
-        const fullCountryName = countryNames[weatherData.country] || weatherData.country;
-        showToast({ title: "Weather data loaded", description: `Current weather for ${weatherData.name}, ${fullCountryName}`, variant: 'success' }); // Added success variant
-    } catch (err) {
-        console.error("Error loading weather data:", err);
-        showToast({ variant: 'destructive', title: "Error", description: "Failed to load weather data. Please try again. " + err.message });
-        weatherContainer.style.display = 'none'; // Hide weather container on error
-    } finally {
-        showLoading(false); // Hide loading spinner
-    }
-}
+        document.body.style.backgroundAttachment = 'fixed';
 
 // Function to search for a city
 async function searchCity(city) {
     if (!city.trim()) {
         showToast({ variant: 'destructive', title: "Input Error", description: "Please enter a city name." });
-        return; // Do nothing if city input is empty
+        return;
     }
 
     try {
-        showLoading(true); // Show loading spinner
+        showLoading(true); // Start loading, hide content
         console.log('Searching city:', city);
-        const weatherData = await getWeatherByCity(city); // Fetch weather by city
+        const weatherData = await getWeatherByCity(city);
 
-        currentCoordinates = weatherData.coord; // Update coordinates
+        currentCoordinates = weatherData.coord;
 
-        renderWeatherCard(weatherData); // Render current weather
+        const { todayForecast, summarizedForecast } = await getForecast(currentCoordinates.lat, currentCoordinates.lon);
 
-        if (currentCoordinates) {
-            const forecastData = await getForecast(currentCoordinates.lat, currentCoordinates.lon);
-            renderForecastCard(forecastData); // Render 5-day forecast
-        } else {
-            forecastCard.innerHTML = '<p style="text-align: center; color: #64748b; font-size: 1rem;">No forecast data available.</p>';
-        }
-
-        renderWeatherDetails({ // Render detailed weather information
+        renderWeatherCard(weatherData); // Removed todayForecast from here
+        renderForecastCard(summarizedForecast);
+        renderWeatherDetails({
             pressure: weatherData.pressure,
             humidity: weatherData.humidity,
             visibility: weatherData.visibility,
@@ -535,68 +747,73 @@ async function searchCity(city) {
             sunset: weatherData.sunset,
         });
 
-        // Set dynamic background image based on weather condition icon
+        renderHourlyWeatherBlock();
+
         const iconCode = weatherData.icon;
         const gifUrl = weatherGifs[iconCode];
         document.body.style.backgroundImage = `url(${gifUrl})`;
-        document.body.style.backgroundSize = 'cover';
-        document.body.style.backgroundRepeat = 'no-repeat';
-        document.body.style.backgroundPosition = 'center';
+ // Ensure this is consistently applied
 
-        weatherContainer.style.display = 'block'; // Make weather container visible
-        weatherContainer.classList.add('fade-in'); // Apply fade-in animation
+        // After successful data load, show the elements
+        showLoading(false); // End loading, show content
+        weatherContainer.classList.add('fade-in');
 
-        // --- MODIFIED SCROLL BEHAVIOR TO TARGET WEATHER CARD ---
-        // Smooth scroll to the weather card (which contains the temperature)
-        if (weatherCard) {
-            weatherCard.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start' // This will place the top of the weather card at the top of the viewport
-            });
-        }
-        // --- END MODIFIED SCROLL BEHAVIOR ---
+   if (weatherCard) {
+    const offset = 120; // More noticeable scroll offset
+    const top = weatherCard.getBoundingClientRect().top + window.pageYOffset - offset;
 
-        // Updated toast message to include full country name
+    window.scrollTo({
+        top: top,
+        behavior: 'smooth'
+    });
+}
+
         const fullCountryName = countryNames[weatherData.country] || weatherData.country;
         showToast({ title: "City found", description: `Weather data for ${weatherData.name}, ${fullCountryName}`, variant: 'success' });
     } catch (err) {
+        document.body.style.background = 'linear-gradient(145deg, #1A1A2E, #16213E, #0F3460)';
         console.error("Error searching city:", err);
-        // Reset background to the specified solid dark teal color on error
-        document.body.style.background = '#1e4b47'; 
-        // Show destructive toast message for invalid city
+        showLoading(false, true); // End loading, indicating an error occurred
         showToast({ variant: 'destructive', title: "City not found", description: "Please check the city name and try again. " + err.message });
-        weatherContainer.style.display = 'none'; // Hide weather container on error
-    } finally {
-        showLoading(false); // Hide loading spinner
+        
+        // The showLoading(false, true) call above will handle hiding all elements and resetting background
     }
 }
 
 // Handle location button click
 async function handleLocationClick() {
     try {
-        showLoading(true); // Show loading spinner
-        const location = await getCurrentLocation(); // Get current device location
-        await loadWeatherData(location.lat, location.lon); // Load weather data for the location
+        showLoading(true); // Start loading, hide content
+        const location = await getCurrentLocation();
+        await loadWeatherData(location.lat, location.lon);
     } catch (err) {
         console.error("Location error:", err);
+        showLoading(false, true); // End loading, indicating an error occurred
         showToast({ variant: 'destructive', title: "Location Error", description: "Unable to get your location. Please search for a city instead. " + err.message });
-        showLoading(false); // Hide loading spinner on error
+        // The showLoading(false, true) call above will handle hiding all elements and resetting background
     }
 }
 
+
 // Event listeners
 searchForm.addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent default form submission
-    searchCity(cityInput.value); // Trigger city search
+    e.preventDefault();
+    searchCity(cityInput.value);
 });
 
 locationBtn.addEventListener('click', () => {
-    handleLocationClick(); // Trigger location based weather
+    handleLocationClick();
 });
 
-// Initialize on page load (load weather for current location)
+modalCloseBtn.addEventListener('click', hideHourlyForecastModal);
+hourlyForecastModal.addEventListener('click', (event) => {
+    if (event.target === hourlyForecastModal) {
+        hideHourlyForecastModal();
+    }
+});
+
+// Initialize on page load
 window.addEventListener('load', () => {
-    // Set initial background color for consistency. Dynamic images will override this later.
-    document.body.style.backgroundColor = '#1e4b47'; 
+    
     handleLocationClick();
 });
