@@ -2381,7 +2381,7 @@ The existing media queries below correctly transition these columns to `width: 1
         flex-wrap: nowrap; /* Keep elements on one line if possible */
         justify-content: space-between; /* Distribute space */
         align-items: center;
-        gap: 0.8rem; /* Slightly reduced gap */
+        gap: 0.6rem; /* Slightly reduced gap */
         padding: 1.2rem 1.5rem; /* Adjusted padding */
         border-radius: 1.2rem;
         max-width: 90%; /* Allow it to be slightly smaller than full width */
@@ -2403,12 +2403,12 @@ The existing media queries below correctly transition these columns to `width: 1
         width: auto; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
-        min-width: 80px; /* Provide a reasonable minimum width */
+        min-width: 120px; /* Provide a reasonable minimum width */
     }
 
     .search-bar button[type="submit"] {
         font-size: 1rem;
-        padding: 0.6rem 1rem;
+        padding: 0.7rem 1.2rem;
         border-radius: 1rem;
         flex-shrink: 0;
     }
@@ -2683,20 +2683,23 @@ The existing media queries below correctly transition these columns to `width: 1
         padding: 0.6rem 0.6rem; /* Further reduced padding for very small screens */
         gap: 0.4rem;
         flex-wrap: nowrap; /* Keep input and buttons on one line */
-        width: 98vw; /* Allow it to take nearly full width, body padding handles overflow */
+        width: 100%; /* Allow it to take nearly full width, body padding handles overflow */
         max-width: unset; /* Remove any max-width constraints */
     }
 
     .search-bar form {
+        flex-grow: 1; /* Allow the form (input + search btn) to take available space */
+        display: flex; /* Ensure it's a flex container for its children */
         gap: 0.4rem;
-        flex-grow: 1; /* Ensure form takes available space */
+        flex-shrink: 1; /* Allow it to shrink */
+        min-width: 0
     }
 
     .search-bar input[type="text"] {
         font-size: 0.85rem;
-        padding: 0.5rem 0.5rem; /* Reduced padding for input field */
+        padding: 0.5rem 0.6rem; /* Reduced padding for input field */
         width: auto; /* Critical: Remove fixed width */
-        min-width: 60px; /* Smallest reasonable min-width for input field */
+        min-width: 130px; /* Smallest reasonable min-width for input field */
         flex-grow: 1; /* Allow it to grow */
         flex-shrink: 1; /* Allow it to shrink */
     }
@@ -2704,12 +2707,18 @@ The existing media queries below correctly transition these columns to `width: 1
     .search-bar button[type="submit"] {
         font-size: 0.85rem;
         padding: 0.5rem 0.8rem; /* Adjusted padding */
+        flex-shrink: 0;
     }
 
     .search-bar .location-btn {
-        width: 2.6rem; /* Slightly smaller */
-        height: 2.6rem; /* Slightly smaller */
-        flex-shrink: 0;
+  width: 2.8rem; /* Fixed width */
+        height: 2.8rem; /* Fixed height to ensure it's a perfect circle */
+        flex-shrink: 0; /* CRITICAL: Prevent location button from shrinking */
+        border-radius: 50%; /* Ensure it stays circular */
+        padding: 0; /* Remove any padding that might interfere with size */
+        display: flex; /* Use flex to center icon inside */
+        justify-content: center;
+        align-items: center;
     }
 
     .search-bar .location-btn img {
@@ -2722,8 +2731,8 @@ The existing media queries below correctly transition these columns to `width: 1
         flex-direction: column; /* Stack input and button vertically on very small screens */
         gap: 0.8rem;
         padding: 1rem;
-        max-width: 95%;
-        width: auto;
+        max-width: unset;
+        width: 100%;
         margin: 1.5rem auto 0;
     }
 
