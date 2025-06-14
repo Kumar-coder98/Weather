@@ -146,7 +146,7 @@ body::before {
     color: #F8FAFC; /* White text */
     transition: all 0.3s ease;
     flex-grow: 1; /* Input takes up available space */
-    min-width: 120px; /* Minimum width for input */
+    width: 200px;  /* Minimum width for input */
 }
 
 .search-bar input[type="text"]::placeholder {
@@ -2594,6 +2594,7 @@ The existing media queries below correctly transition these columns to `width: 1
         font-size: 0.85rem;
         /* Further reduced horizontal padding for the input field */
         padding: 0.6rem 0.6rem; /* Adjusted from 0.6rem 0.8rem */
+        width: 200px;
     }
     .search-bar button[type="submit"] {
         font-size: 0.85rem;
