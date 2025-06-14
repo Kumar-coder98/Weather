@@ -2379,9 +2379,9 @@ The existing media queries below correctly transition these columns to `width: 1
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap; /* Keep elements on one line if possible */
-        justify-content: space-between; /* Distribute space */
+        justify-content: center; /* Distribute space */
         align-items: center;
-        gap: 0.9rem; /* Slightly reduced gap */
+        gap: 0.8rem; /* Slightly reduced gap */
         padding: 1.2rem 1.5rem; /* Adjusted padding */
         border-radius: 1.2rem;
         max-width: 90%; /* Allow it to be slightly smaller than full width */
