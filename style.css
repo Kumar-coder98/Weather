@@ -2377,7 +2377,7 @@ footer {
         flex-wrap: nowrap; /* Keep elements on one line if possible */
         justify-content: center; /* Distribute space */
         align-items: center;
-        gap: 1rem; /* Slightly reduced gap */
+        gap: 0.8rem; /* Slightly reduced gap */
         padding: 1.2rem 1.8rem; /* Adjusted padding */
         border-radius: 1.2rem;
         max-width: 100px; /* Allow it to be slightly smaller than full width */
