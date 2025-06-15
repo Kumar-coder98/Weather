@@ -1,8 +1,4 @@
-/*
- * General Global Styles & Body Setup
- * Sets base font, background, and centers the main app container.
- */
-/* Add this at the very top of your CSS file */
+
 html {
     box-sizing: border-box;
 }
@@ -75,10 +71,7 @@ body::before {
     z-index: 1; /* Ensures app content is above the body overlay */
 }
 
-/*
- * Header Styles
- * Transparent, blurred card style for the main title.
- */
+
 .weather-header {
     max-width: 800px;
     margin: 0.5rem auto 0; /* Centers header horizontally */
@@ -108,10 +101,7 @@ body::before {
     opacity: 0.9;
 }
 
-/*
- * Search Bar Styles
- * Flexible layout for input, search button, and location button.
- */
+
 .search-bar {
     border-radius: 1.8rem;
     padding: 1.8rem 2.5rem;
