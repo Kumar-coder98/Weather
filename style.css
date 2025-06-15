@@ -3,6 +3,7 @@
  * Sets base font, background, and centers the main app container.
  */
 /* Add this at the very top of your CSS file */
+
 html {
     box-sizing: border-box;
 }
