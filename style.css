@@ -439,7 +439,7 @@ animation: float 1.5s ease-in-out infinite; /* Apply float animation on hover */
   font-weight: bold;
 }
 .feels-like {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #94A3B8;
   margin-left: 8px;
   vertical-align: middle;
@@ -1504,8 +1504,8 @@ footer {
         padding: 0rem;
     }
     .hourly-weather-summary .hourly-item {
-        min-width: 70px;
-        padding: 0.7rem 0.5rem;
+        min-width: 50px;
+        padding: 0.4rem 0.4rem;
     }
     .hourly-weather-summary .hourly-item .hourly-icon {
         width: 40px;
@@ -1527,7 +1527,7 @@ footer {
     }
 
     .details-grid {
-        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
         gap: 0.6rem;
     }
     .detail-item {
