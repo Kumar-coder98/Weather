@@ -2339,87 +2339,104 @@ footer {
 }
 
 /* Tablet & Smaller Screens (max-width: 768px) */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     body {
-        padding: 10px;
+        margin: 0;
+        padding: 0; /* Ensure no extra padding causing white space */
+        width: 100vw;
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        box-sizing: border-box; /* Include padding and borders in the element's total width and height */
+        
+        /* Background image fixes - ensure it covers the entire viewport */
+        background-size: cover; 
+        background-repeat: no-repeat; 
+        background-position: center center; 
+        min-height: 100vh; /* Ensure body takes full height for background coverage */
+    }
+
+    img {
+        max-width: 90%;
+        height: auto;
+        display: block;
     }
 
     #app {
         gap: 1rem;
+        padding: 15px; /* Apply overall padding to the main app container */
+        width: 100%; /* Ensure #app takes full width within body */
+        box-sizing: border-box; /* Crucial for layout calculation */
     }
 
     .weather-header {
-        padding: 1rem 1.2rem;
-        border-radius: 1rem;
+        padding: 1.2rem 1.8rem;
+        border-radius: 1.2rem;
     }
 
     .weather-header h1 {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
     }
 
     .weather-header p {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
     }
 
-    /* --- Search Bar adjustments for very small screens --- */
+    /* --- Search Bar adjustments for mobile/tablet --- */
     .search-bar {
-        padding: 0.6rem 0.6rem; /* Further reduced padding for very small screens */
-        gap: 0.4rem;
-        flex-wrap: nowrap; /* Keep input and buttons on one line */
-        width: 100%; /* Allow it to take nearly full width, body padding handles overflow */
-        max-width: unset; /* Remove any max-width constraints */
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap; /* Keep elements on a single line */
+        justify-content: space-between; /* Distribute space between input form and location button */
+        align-items: center;
+        gap: 0.5rem; /* Space between the search form and the location button */
+        padding: 0.8rem 1rem; /* Reduced padding to make the bar more compact */
+        border-radius: 1.2rem;
+        max-width: 95%; /* Further reduced max-width for the entire search bar */
+        width: fit-content; /* Allow width to shrink to content, up to max-width */
+        margin: 0 auto; /* Center the search bar horizontally */
+        box-sizing: border-box; /* Include padding in the width calculation */
     }
 
     .search-bar form {
-        flex-grow: 1; /* Allow the form (input + search btn) to take available space */
-        display: flex; /* Ensure it's a flex container for its children */
-        gap: 0.4rem;
-        flex-shrink: 1; /* Allow it to shrink */
-        min-width: 0
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1; /* Allows the form to take available space */
+        gap: 0.2rem; /* Greatly reduced gap between input and search button */
+        align-items: center; /* Vertically align items in the form */
     }
 
     .search-bar input[type="text"] {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.6rem; /* Reduced padding for input field */
-        width: auto; /* Critical: Remove fixed width */
-        min-width: 130px; /* Smallest reasonable min-width for input field */
-        flex-grow: 1; /* Allow it to grow */
-        flex-shrink: 1; /* Allow it to shrink */
+        font-size: 1rem;
+        padding: 0.6rem 0.8rem; /* Reduced padding for a tighter fit */
+        border-radius: 1rem;
+        flex-grow: 1; /* Allow input to grow */
+        flex-shrink: 1; /* Allow input to shrink */
+        min-width: 80px; /* Minimum width to ensure text input is usable */
+        max-width: 150px; /* Maximum width to prevent it from getting too long */
     }
 
     .search-bar button[type="submit"] {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.8rem; /* Adjusted padding */
-        flex-shrink: 0;
+        font-size: 1rem;
+        padding: 0.6rem 0.9rem; /* Reduced padding for the search button */
+        border-radius: 1rem;
+        flex-shrink: 0; /* Prevent the search button from shrinking */
     }
 
     .search-bar .location-btn {
-  width: 2.8rem; /* Fixed width */
-        height: 2.8rem; /* Fixed height to ensure it's a perfect circle */
-        flex-shrink: 0; /* CRITICAL: Prevent location button from shrinking */
-        border-radius: 50%; /* Ensure it stays circular */
-        padding: 0; /* Remove any padding that might interfere with size */
-        display: flex; /* Use flex to center icon inside */
+        margin-left: 0.5rem; /* Consistent spacing */
+        width: 2.8rem; /* Fixed width for the location button */
+        height: 2.8rem; /* Fixed height for the location button */
+        flex-shrink: 0; /* Prevent the location button from shrinking */
+        display: flex; /* Use flexbox to center its content (image) */
         justify-content: center;
         align-items: center;
     }
 
     .search-bar .location-btn img {
-        height: 20px; /* Smaller icon */
-        width: 20px;
+        height: 20px; /* Slightly smaller image for a better fit */
+        width: 20px; /* Slightly smaller image for a better fit */
     }
+}
 
-
-    /* Time search block wrapper adjustments for tablets */
-    .time-search-block-wrapper {
-        flex-direction: row; /* Keep elements inline */
-        flex-wrap: nowrap; /* Prevent wrapping if space allows */
-        gap: 1rem;
-        padding: 1rem 1.5rem;
-        max-width: 90%; /* Similar to search-bar */
-        width: auto;
-        margin: 2rem auto 0;
-    }
 
     .time-input-container {
         flex-grow: 1;
