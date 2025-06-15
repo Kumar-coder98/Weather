@@ -1057,6 +1057,7 @@ footer {
 
 /* --- Hourly Weather Section Styling (from your previous continuation) --- */
 
+
 /* --- Hourly Weather Section Styling (from your previous continuation) --- */
 
 /* Wrapper for the entire search block (input + button) */
@@ -1240,7 +1241,6 @@ footer {
         width: 100%; /* Ensure they take full width when stacking */
     }
 }
-
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
     body {
@@ -1610,7 +1610,7 @@ footer {
     }
 
     .search-bar .location-btn {
-  width: 2.8rem; /* Fixed width */
+        width: 2.8rem; /* Fixed width */
         height: 2.8rem; /* Fixed height to ensure it's a perfect circle */
         flex-shrink: 0; /* CRITICAL: Prevent location button from shrinking */
         border-radius: 50%; /* Ensure it stays circular */
