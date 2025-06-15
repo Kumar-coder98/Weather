@@ -2342,19 +2342,19 @@ footer {
 @media (max-width: 768px) {
     body {
         margin: 0;
-        padding: 15px; /* Slightly increased padding for better spacing on tablets */
-        width: 100vw;
+        padding: 10px; /* Slightly increased padding for better spacing on tablets */
+        width: 90vw;
         overflow-x: hidden;
     }
 
     img {
-        max-width: 100%;
+        max-width: 90%;
         height: auto;
         display: block;
     }
 
     #app {
-        gap: 1.5rem;
+        gap: 1rem;
     }
 
     .weather-header {
@@ -2377,7 +2377,7 @@ footer {
         flex-wrap: nowrap; /* Keep elements on one line if possible */
         justify-content: center; /* Distribute space */
         align-items: center;
-        gap: 1.2rem; /* Slightly reduced gap */
+        gap: 1rem; /* Slightly reduced gap */
         padding: 1.2rem 1.8rem; /* Adjusted padding */
         border-radius: 1.2rem;
         max-width: 100px; /* Allow it to be slightly smaller than full width */
@@ -2396,10 +2396,10 @@ footer {
         font-size: 1rem;
         padding: 0.8rem 1.2rem;
         border-radius: 1rem;
-        max-width: 140px; /* Remove specific width, let flex-grow handle it */
+        max-width: 200px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
-        min-width: 80px; /* Provide a reasonable minimum width */
+        min-width: 100px; /* Provide a reasonable minimum width */
     }
 
     .search-bar button[type="submit"] {
