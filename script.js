@@ -282,7 +282,7 @@ function showToast({ title, description, variant }) {
             toast.classList.add('hide');
             toast.addEventListener('animationend', () => toast.remove(), { once: true });
         }
-    }, 5000);
+    }, 3000);
 }
 
 // Custom icon URLs for weather conditions
