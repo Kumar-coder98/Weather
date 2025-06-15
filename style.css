@@ -2386,8 +2386,8 @@ footer {
         gap: 0.5rem; /* Slightly reduced gap */
         padding: 1.2rem 1.8rem; /* Adjusted padding */
         border-radius: 1.2rem;
-        max-width: 120px; /* Allow it to be slightly smaller than full width */
-        width: 80%; /* Let content dictate width within max-width */
+        max-width: 80px; /* Allow it to be slightly smaller than full width */
+        width: auto; /* Let content dictate width within max-width */
         margin: 0 auto;
     }
 
