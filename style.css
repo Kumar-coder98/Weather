@@ -2342,13 +2342,13 @@ footer {
 @media (max-width: 768px) {
     body {
         margin: 0;
-        padding: 10px; /* Slightly increased padding for better spacing on tablets */
-        width: 90vw;
+        padding: 15px; /* Slightly increased padding for better spacing on tablets */
+        width: 100vw;
         overflow-x: hidden;
     }
 
     img {
-        max-width: 90%;
+        max-width: 100%;
         height: auto;
         display: block;
     }
