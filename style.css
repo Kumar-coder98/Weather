@@ -2396,10 +2396,10 @@ footer {
         font-size: 1rem;
         padding: 0.8rem 1.2rem;
         border-radius: 1rem;
-        max-width: 200px; /* Remove specific width, let flex-grow handle it */
+        max-width: 100px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
-        min-width: 100px; /* Provide a reasonable minimum width */
+        min-width: 70px; /* Provide a reasonable minimum width */
     }
 
     .search-bar button[type="submit"] {
