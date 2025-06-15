@@ -2347,7 +2347,7 @@ footer {
         gap: 0.4rem;
         padding: 0.8rem 1rem;
         border-radius: 1rem;
-        max-width: 100%;
+        max-width: 70%;
         width: auto;
         margin: 0 auto;
         flex-wrap: nowrap;
