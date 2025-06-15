@@ -282,7 +282,7 @@ function showToast({ title, description, variant }) {
             toast.classList.add('hide');
             toast.addEventListener('animationend', () => toast.remove(), { once: true });
         }
-    }, 3000);
+    }, 2000);
 }
 
 // Custom icon URLs for weather conditions
@@ -408,7 +408,7 @@ function renderHourlyWeatherBlock(dateKey = new Date().toISOString().split('T')[
     }).join('');
 
     hourlyWeatherContainer.innerHTML = `
-        <h3>Hourly Weather for ${todayKey}</h3>
+        <h3 align="center"  >Weather conditions throughout the day</h3>
         <div class="hourly-weather-summary">
             ${hourlyWeatherHtml}
         </div>
@@ -817,3 +817,5 @@ window.addEventListener('load', () => {
     
     handleLocationClick();
 });
+
+
