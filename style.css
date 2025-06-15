@@ -1422,7 +1422,7 @@ footer {
         gap: 0.6rem;
         flex-wrap: nowrap; /* Prevent wrapping to next line */
         justify-content: space-between; /* Distribute space */
-        width: 310px;
+        width: 320px;
     }
     .search-bar form {
         flex-grow: 1; /* Allow the form (input + search btn) to take available space */
@@ -1474,7 +1474,7 @@ footer {
     }
 
     .weather-card .weather-temp {
-        font-size: 3.8rem;
+        font-size: 2.8rem;
     }
     .weather-card h2 {
         font-size: 2rem;
@@ -1501,7 +1501,7 @@ footer {
 
     .hourly-weather-summary {
         /* height: 140px; REMOVED fixed height */
-        padding: 1rem;
+        padding: 0rem;
     }
     .hourly-weather-summary .hourly-item {
         min-width: 70px;
