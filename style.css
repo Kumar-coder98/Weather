@@ -2340,9 +2340,9 @@ footer {
 
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
-   body {
+    body {
         margin: 0;
-        padding: 15px; /* Slightly increased padding for better spacing on tablets */
+        padding: 0; /* Remove padding here, let #app handle it */
         width: 100vw;
         overflow-x: hidden;
         box-sizing: border-box; /* Ensure padding and borders are included in width */
@@ -2351,6 +2351,7 @@ footer {
         background-size: cover; /* Scale background image to cover entire viewport */
         background-repeat: no-repeat; /* Prevent background image repetition */
         background-position: center center; /* Center background image */
+        min-height: 100vh; /* Ensure body takes full height to cover background */
     }
 
     img {
@@ -2361,6 +2362,9 @@ footer {
 
     #app {
         gap: 1rem;
+        padding: 15px; /* Apply overall padding to the app container */
+        width: 100%; /* Ensure #app takes full width within body */
+        box-sizing: border-box;
     }
 
     .weather-header {
@@ -2381,51 +2385,56 @@ footer {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap; /* Keep elements on one line if possible */
-        justify-content: center; /* Distribute space */
+        justify-content: center; /* Center the items horizontally */
         align-items: center;
-        gap: 0.5rem; /* Slightly reduced gap */
-        padding: 1.2rem 1.8rem; /* Adjusted padding */
+        gap: 0.5rem; /* Reduced gap between form and location button */
+        padding: 1rem 1.2rem; /* Adjusted padding for a more compact look */
         border-radius: 1.2rem;
-        max-width: 80px; /* Allow it to be slightly smaller than full width */
-        width: auto; /* Let content dictate width within max-width */
-        margin: 0 auto;
+        max-width: 90%; /* Max width for the search bar relative to parent */
+        width: fit-content; /* Allow content to dictate width up to max-width */
+        margin: 0 auto; /* Center the search bar */
     }
 
     .search-bar form {
         display: flex;
         flex-direction: row;
         flex-grow: 1;
-        gap: 0.4rem; /* Gap within the form (input and search button) */
+        gap: 0.3rem; /* Further reduced gap within the form (input and search button) */
+        align-items: center; /* Vertically align items in the form */
     }
 
     .search-bar input[type="text"] {
         font-size: 1rem;
-        padding: 0.8rem 0.8rem;
+        padding: 0.7rem 0.8rem; /* Slightly reduced padding */
         border-radius: 1rem;
-        max-width: 140px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
         flex-shrink: 1;
-        min-width: 80px; /* Provide a reasonable minimum width */
+        min-width: 100px; /* Adjusted minimum width */
+        max-width: 160px; /* Set a reasonable max-width for the input */
     }
 
     .search-bar button[type="submit"] {
         font-size: 1rem;
-        padding: 0.7rem 1.2rem;
+        padding: 0.7rem 1rem; /* Adjusted padding to be more compact */
         border-radius: 1rem;
         flex-shrink: 0;
     }
 
     .search-bar .location-btn {
         margin-left: 0.5rem;
-        width: 3.2rem;
-        height: 3.2rem;
+        width: 3rem; /* Slightly reduced width */
+        height: 3rem; /* Slightly reduced height to match */
         flex-shrink: 0;
+        display: flex; /* Use flexbox to center the image */
+        justify-content: center;
+        align-items: center;
     }
 
     .search-bar .location-btn img {
-        height: 24px;
-        width: 24px;
+        height: 22px; /* Adjusted image size */
+        width: 22px; /* Adjusted image size */
     }
+}
 
     /* Time search block wrapper adjustments for tablets */
     .time-search-block-wrapper {
