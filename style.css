@@ -787,7 +787,7 @@ footer a:hover {
     overflow: hidden;
     opacity: 0;
     transform: translateX(100%);
-    animation: slideInRight 0.5s ease-out forwards;
+    animation: slideInRight 0.2s ease-out forwards;
     pointer-events: auto; /* Re-enable pointer events for individual toasts */
     min-width: 250px;
     max-width: 100%;
@@ -796,7 +796,7 @@ footer a:hover {
 }
 
 .toast-notification.hide {
-    animation: slideOutRight 0.5s ease-in forwards;
+    animation: slideOutRight 0.2s ease-in forwards;
 }
 
 .toast-title {
@@ -1422,7 +1422,7 @@ footer {
         gap: 0.6rem;
         flex-wrap: nowrap; /* Prevent wrapping to next line */
         justify-content: space-between; /* Distribute space */
-        width: 320px;
+        width: 305px;
     }
     .search-bar form {
         flex-grow: 1; /* Allow the form (input + search btn) to take available space */
