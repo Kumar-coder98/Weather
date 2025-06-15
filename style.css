@@ -1422,7 +1422,7 @@ footer {
         gap: 0.6rem;
         flex-wrap: nowrap; /* Prevent wrapping to next line */
         justify-content: space-between; /* Distribute space */
-        width: 320px;
+        width: 310px;
     }
     .search-bar form {
         flex-grow: 1; /* Allow the form (input + search btn) to take available space */
