@@ -2378,7 +2378,7 @@ footer {
         justify-content: center; /* Distribute space */
         align-items: center;
         gap: 1.2rem; /* Slightly reduced gap */
-        padding: 1.2rem 0.8rem; /* Adjusted padding */
+        padding: 1.2rem 1.2rem; /* Adjusted padding */
         border-radius: 1.2rem;
         max-width: 100px; /* Allow it to be slightly smaller than full width */
         width: auto; /* Let content dictate width within max-width */
@@ -2394,7 +2394,7 @@ footer {
 
     .search-bar input[type="text"] {
         font-size: 1rem;
-        padding: 0.8rem 1.2rem;
+        padding: 0.8rem 1rem;
         border-radius: 1rem;
         max-width: 140px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
