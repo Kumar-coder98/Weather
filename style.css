@@ -2339,58 +2339,75 @@ footer {
 }
 
 /* Tablet & Smaller Screens (max-width: 768px) */
-@media (max-width: 768px) {
-    .search-bar {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        padding: 0.8rem 1rem;
-        border-radius: 1rem;
-        max-width: 100%;
-        width: auto;
-        margin: 0 auto;
-        flex-wrap: nowrap;
-    }
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
 
-    .search-bar form {
-        display: flex;
-        flex-direction: row;
-        gap: 0.3rem;
-        flex-wrap: nowrap;
-        align-items: center;
-    }
+    #app {
+        gap: 1rem;
+    }
 
-    .search-bar input[type="text"] {
-        font-size: 0.95rem;
-        padding: 0.6rem 0.8rem;
-        border-radius: 0.8rem;
-        width: 100px;
-        flex-shrink: 1;
-    }
+    .weather-header {
+        padding: 1rem 1.2rem;
+        border-radius: 1rem;
+    }
 
-    .search-bar button[type="submit"] {
-        font-size: 0.9rem;
-        padding: 0.6rem 0.9rem;
-        border-radius: 0.8rem;
-        flex-shrink: 0;
-    }
+    .weather-header h1 {
+        font-size: 1.8rem;
+    }
 
-    .search-bar .location-btn {
-        width: 2.8rem;
-        height: 2.8rem;
-        margin-left: 0.3rem;
-        flex-shrink: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+    .weather-header p {
+        font-size: 0.95rem;
+    }
 
-    .search-bar .location-btn img {
-        width: 22px;
-        height: 22px;
-    }
-}
+    /* --- Search Bar adjustments for very small screens --- */
+    .search-bar {
+        padding: 0.6rem 0.6rem; /* Further reduced padding for very small screens */
+        gap: 0.4rem;
+        flex-wrap: nowrap; /* Keep input and buttons on one line */
+        width: 100%; /* Allow it to take nearly full width, body padding handles overflow */
+        max-width: unset; /* Remove any max-width constraints */
+    }
+
+    .search-bar form {
+        flex-grow: 1; /* Allow the form (input + search btn) to take available space */
+        display: flex; /* Ensure it's a flex container for its children */
+        gap: 0.4rem;
+        flex-shrink: 1; /* Allow it to shrink */
+        min-width: 0
+    }
+
+    .search-bar input[type="text"] {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.6rem; /* Reduced padding for input field */
+        width: auto; /* Critical: Remove fixed width */
+        min-width: 130px; /* Smallest reasonable min-width for input field */
+        flex-grow: 1; /* Allow it to grow */
+        flex-shrink: 1; /* Allow it to shrink */
+    }
+
+    .search-bar button[type="submit"] {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem; /* Adjusted padding */
+        flex-shrink: 0;
+    }
+
+    .search-bar .location-btn {
+  width: 2.8rem; /* Fixed width */
+        height: 2.8rem; /* Fixed height to ensure it's a perfect circle */
+        flex-shrink: 0; /* CRITICAL: Prevent location button from shrinking */
+        border-radius: 50%; /* Ensure it stays circular */
+        padding: 0; /* Remove any padding that might interfere with size */
+        display: flex; /* Use flex to center icon inside */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .search-bar .location-btn img {
+        height: 20px; /* Smaller icon */
+        width: 20px;
+    }
 
 
     /* Time search block wrapper adjustments for tablets */
