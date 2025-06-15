@@ -2341,102 +2341,54 @@ footer {
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
     body {
-        margin: 0;
-        padding: 0; /* Ensure no extra padding causing white space */
-        width: 100vw;
-        overflow-x: hidden; /* Prevent horizontal scrolling */
-        box-sizing: border-box; /* Include padding and borders in the element's total width and height */
-        
-        /* Background image fixes - ensure it covers the entire viewport */
-        background-size: cover; 
-        background-repeat: no-repeat; 
-        background-position: center center; 
-        min-height: 100vh; /* Ensure body takes full height for background coverage */
+        padding: 15px; /* Reduced overall padding */
     }
-
-    img {
-        max-width: 90%;
-        height: auto;
-        display: block;
-    }
-
     #app {
-        gap: 1rem;
-        padding: 15px; /* Apply overall padding to the main app container */
-        width: 100%; /* Ensure #app takes full width within body */
-        box-sizing: border-box; /* Crucial for layout calculation */
+        gap: 1.5rem; /* Reduced gap between sections */
     }
-
     .weather-header {
         padding: 1.2rem 1.8rem;
         border-radius: 1.2rem;
     }
-
     .weather-header h1 {
         font-size: 2.2rem;
     }
-
     .weather-header p {
         font-size: 1.1rem;
     }
 
-    /* --- Search Bar adjustments for mobile/tablet --- */
+    /* Search Bar adjustments */
     .search-bar {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap; /* Keep elements on a single line */
-        justify-content: space-between; /* Distribute space between input form and location button */
-        align-items: center;
-        gap: 0.5rem; /* Space between the search form and the location button */
-        padding: 0.8rem 1rem; /* Reduced padding to make the bar more compact */
-        border-radius: 1.2rem;
-        max-width: 95%; /* Further reduced max-width for the entire search bar */
-        width: fit-content; /* Allow width to shrink to content, up to max-width */
-        margin: 0 auto; /* Center the search bar horizontally */
-        box-sizing: border-box; /* Include padding in the width calculation */
+        flex-direction: row; /* Keep row direction */
+        flex-wrap: nowrap; /* Ensure elements stay on one line, allow children to shrink */
+        justify-content: space-between;
+        gap: 0.8rem;
+        padding: 1.2rem 1.5rem;
+        border-radius: 1rem;
+        max-width: none; /* Allow full width */
     }
-
     .search-bar form {
-        display: flex;
-        flex-direction: row;
-        flex-grow: 1; /* Allows the form to take available space */
-        gap: 0.2rem; /* Greatly reduced gap between input and search button */
-        align-items: center; /* Vertically align items in the form */
+        flex-grow: 1;
+        flex-shrink: 1;
+        gap: 0.5rem;
     }
-
     .search-bar input[type="text"] {
         font-size: 1rem;
-        padding: 0.6rem 0.8rem; /* Reduced padding for a tighter fit */
+        padding: 0.8rem 1rem;
         border-radius: 1rem;
-        flex-grow: 1; /* Allow input to grow */
-        flex-shrink: 1; /* Allow input to shrink */
-        min-width: 80px; /* Minimum width to ensure text input is usable */
-        max-width: 150px; /* Maximum width to prevent it from getting too long */
+        min-width: 0; /* Allow input to shrink maximally */
     }
-
     .search-bar button[type="submit"] {
         font-size: 1rem;
-        padding: 0.6rem 0.9rem; /* Reduced padding for the search button */
+        padding: 0.8rem 1.2rem;
         border-radius: 1rem;
-        flex-shrink: 0; /* Prevent the search button from shrinking */
+        flex-shrink: 0;
     }
-
     .search-bar .location-btn {
-        margin-left: 0.5rem; /* Consistent spacing */
-        width: 2.8rem; /* Fixed width for the location button */
-        height: 2.8rem; /* Fixed height for the location button */
-        flex-shrink: 0; /* Prevent the location button from shrinking */
-        display: flex; /* Use flexbox to center its content (image) */
-        justify-content: center;
-        align-items: center;
+        width: 3.2rem;
+        height: 3.2rem;
+        flex-shrink: 0;
     }
-
-    .search-bar .location-btn img {
-        height: 20px; /* Slightly smaller image for a better fit */
-        width: 20px; /* Slightly smaller image for a better fit */
-    }
-}
-
 
     .time-input-container {
         flex-grow: 1;
