@@ -2394,7 +2394,7 @@ footer {
 
     .search-bar input[type="text"] {
         font-size: 1rem;
-        padding: 0.8rem 1rem;
+        padding: 0.8rem 1.2rem;
         border-radius: 1rem;
         max-width: 140px; /* Remove specific width, let flex-grow handle it */
         flex-grow: 1;
