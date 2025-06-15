@@ -2340,11 +2340,17 @@ footer {
 
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
-    body {
+   body {
         margin: 0;
         padding: 15px; /* Slightly increased padding for better spacing on tablets */
         width: 100vw;
         overflow-x: hidden;
+        box-sizing: border-box; /* Ensure padding and borders are included in width */
+        
+        /* Background image fixes */
+        background-size: cover; /* Scale background image to cover entire viewport */
+        background-repeat: no-repeat; /* Prevent background image repetition */
+        background-position: center center; /* Center background image */
     }
 
     img {
