@@ -2395,7 +2395,7 @@ footer {
         display: flex;
         flex-direction: row;
         flex-grow: 1;
-        gap: 0.6rem; /* Gap within the form (input and search button) */
+        gap: 0.4rem; /* Gap within the form (input and search button) */
     }
 
     .search-bar input[type="text"] {
