@@ -2340,101 +2340,58 @@ footer {
 
 /* Tablet & Smaller Screens (max-width: 768px) */
 @media (max-width: 768px) {
-    body {
-        margin: 0;
-        padding: 0; /* Remove padding here, let #app handle it */
-        width: 100vw;
-        overflow-x: hidden;
-        box-sizing: border-box; /* Ensure padding and borders are included in width */
-        
-        /* Background image fixes */
-        background-size: cover; /* Scale background image to cover entire viewport */
-        background-repeat: no-repeat; /* Prevent background image repetition */
-        background-position: center center; /* Center background image */
-        min-height: 100vh; /* Ensure body takes full height to cover background */
-    }
+    .search-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.8rem 1rem;
+        border-radius: 1rem;
+        max-width: 100%;
+        width: auto;
+        margin: 0 auto;
+        flex-wrap: nowrap;
+    }
 
-    img {
-        max-width: 90%;
-        height: auto;
-        display: block;
-    }
+    .search-bar form {
+        display: flex;
+        flex-direction: row;
+        gap: 0.3rem;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
 
-    #app {
-        gap: 1rem;
-        padding: 15px; /* Apply overall padding to the app container */
-        width: 100%; /* Ensure #app takes full width within body */
-        box-sizing: border-box;
-    }
+    .search-bar input[type="text"] {
+        font-size: 0.95rem;
+        padding: 0.6rem 0.8rem;
+        border-radius: 0.8rem;
+        width: 130px;
+        flex-shrink: 1;
+    }
 
-    .weather-header {
-        padding: 1.2rem 1.8rem;
-        border-radius: 1.2rem;
-    }
+    .search-bar button[type="submit"] {
+        font-size: 0.9rem;
+        padding: 0.6rem 0.9rem;
+        border-radius: 0.8rem;
+        flex-shrink: 0;
+    }
 
-    .weather-header h1 {
-        font-size: 2.2rem;
-    }
+    .search-bar .location-btn {
+        width: 2.8rem;
+        height: 2.8rem;
+        margin-left: 0.3rem;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-    .weather-header p {
-        font-size: 1.1rem;
-    }
-
-    /* --- Search Bar adjustments for tablets --- */
-    .search-bar {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap; /* Keep elements on one line if possible */
-        justify-content: center; /* Center the items horizontally */
-        align-items: center;
-        gap: 0.5rem; /* Reduced gap between form and location button */
-        padding: 1rem 1.2rem; /* Adjusted padding for a more compact look */
-        border-radius: 1.2rem;
-        max-width: 90%; /* Max width for the search bar relative to parent */
-        width: fit-content; /* Allow content to dictate width up to max-width */
-        margin: 0 auto; /* Center the search bar */
-    }
-
-    .search-bar form {
-        display: flex;
-        flex-direction: row;
-        flex-grow: 1;
-        gap: 0.3rem; /* Further reduced gap within the form (input and search button) */
-        align-items: center; /* Vertically align items in the form */
-    }
-
-    .search-bar input[type="text"] {
-        font-size: 1rem;
-        padding: 0.7rem 0.8rem; /* Slightly reduced padding */
-        border-radius: 1rem;
-        flex-grow: 1;
-        flex-shrink: 1;
-        min-width: 100px; /* Adjusted minimum width */
-        max-width: 160px; /* Set a reasonable max-width for the input */
-    }
-
-    .search-bar button[type="submit"] {
-        font-size: 1rem;
-        padding: 0.7rem 1rem; /* Adjusted padding to be more compact */
-        border-radius: 1rem;
-        flex-shrink: 0;
-    }
-
-    .search-bar .location-btn {
-        margin-left: 0.5rem;
-        width: 3rem; /* Slightly reduced width */
-        height: 3rem; /* Slightly reduced height to match */
-        flex-shrink: 0;
-        display: flex; /* Use flexbox to center the image */
-        justify-content: center;
-        align-items: center;
-    }
-
-    .search-bar .location-btn img {
-        height: 22px; /* Adjusted image size */
-        width: 22px; /* Adjusted image size */
-    }
+    .search-bar .location-btn img {
+        width: 22px;
+        height: 22px;
+    }
 }
+
 
     /* Time search block wrapper adjustments for tablets */
     .time-search-block-wrapper {
